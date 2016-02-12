@@ -23,5 +23,5 @@ include('../includes/admin/login.php'); //contient le login de la page admin
 include('../includes/common/footer.php'); //contient le footer.
 
 ?>
-</body>
+</body> 
 </html>
