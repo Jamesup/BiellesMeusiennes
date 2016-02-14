@@ -61,14 +61,14 @@ if (isset($_POST['firstname'])
 		/* envoi emails*/
 
 		/* retour à la page des Bielles Meusiennes avec un message de réussite ou d'erreur */
-		//header('Location: http://hiddenj.jimdo.com/success');
+		
 		header('Location: http://localhost/site distant autorise/success.html');
 	} catch (Exception $e) {		
-		//header('Location: http://hiddenj.jimdo.com/error');
+		
 		header('Location: http://localhost/site distant autorise/error.html');
 	}
 } else {
-	//header('Location: http://hiddenj.jimdo.com/error');
+	
 	header('Location: http://localhost/site distant autorise/error.html');
 }
 
