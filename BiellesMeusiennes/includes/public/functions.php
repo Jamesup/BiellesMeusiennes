@@ -4,26 +4,41 @@
 include('./includes/common/connexion.php'); 
 
 //fonction qui enregistre l'inscription dans la bdd  /!\ IL MANQUE DES CHAMPS A AJOUTER PAR RAPPORT AU FORMULAIRE /!\
-function ajouter_inscription($user, $mdp, $mail, $hash_validation) {
+function ajouter_inscription($donneesOwners, $donneesVehicles) {
 
 	$bdd = connexionbdd();
 
-	$requete = $bdd->prepare("INSERT INTO users SET
-		nom_utilisateur = :nom_utilisateur,
-		adresse_email = :adresse_email,
-		hash_validation = :hash_validation,
-		date_inscription = NOW()");
 
-	$requete->bindValue(':nom_utilisateur', $user);
-	$requete->bindValue(':mot_de_passe',    $mdp);
-	$requete->bindValue(':adresse_email',   $mail);
-	$requete->bindValue(':hash_validation', $hash_validation);
+	/* On crée le nouveau propriétaire dans la bdd*/
+	$requeteOwners = $bdd->prepare(
+		'INSERT INTO owners (firstname, lastname, type, email, adress1, adress2, adress3, city, cp, cedex, country, is_banned, created) 
+		VALUES (:firstname, :lastname, :type, :email, :adress1, :adress2, :adress3, :city, :cp, :cedex, :country, false, NOW())');
 
-	if ($requete->execute()) {
-	
-		return $bdd->lastInsertId();
+	try {
+		$requeteOwners->execute($donneesOwners);
 	}
-	return $requete->errorInfo();
+	catch (Exception $e) {
+		throw $e;
+	}
+
+
+	/* On crée le nouveau véhicule lié au propriétaire précédement créé*/
+	$donneesVehicles['owner_id'] = $bdd->lastInsertId();
+
+	$requeteVehicles = $bdd->prepare(
+		'INSERT INTO vehicles (owner_id, marque, model, model_info, date_circu, imat, infos, is_banned, created) 
+		VALUES (:owner_id, :marque, :model, :model_info, :date_circu, :imat, :infos, false, NOW())');
+
+	try {	
+		$requeteVehicles->execute($donneesVehicles);
+	}
+	catch (Exception $e) {
+		/* En cas d'erreur, on efface le propriétaire de la bdd pour retrouver l'état initial de la bdd avant inscription*/
+		$requeteDelete = $bdd->prepare(
+		'DELETE FROM owners WHERE id = :owner_id');
+		$requeteDelete->execute(['owner_id' => $donneesVehicles['owner_id']]);
+		throw $e;
+	} 
 }
 
 
