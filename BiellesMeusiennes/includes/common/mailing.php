@@ -1,4 +1,7 @@
 <?php
+
+include_once('./includes/common/functions.php');
+
 function envoi_mail ($contenu, $mail , $donneesOwner, $donneesVehicle) {
 
 	if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)) // On filtre les serveurs qui rencontrent des bogues.
@@ -29,138 +32,16 @@ function envoi_mail ($contenu, $mail , $donneesOwner, $donneesVehicle) {
 			//=========
 			//=====Déclaration des messages au format texte et au format HTML.
 			$message_txt = "Bonjour " .$donneesOwner['firstname']. " ".$donneesOwner['name'].",".$passage_ligne."nous avons bien pris en compte votre demande concernant le véhicule suivant :".$passage_ligne."Marque : ".$donneesVehicle['marque'].$passage_ligne."Modèle : ".$donneesVehicle['model'].$passage_ligne."Immatriculation : ".$donneesVehicle['imat'].$passage_ligne."Date de mise en circulation : ".$donneesVehicle['date_circu'].$passage_ligne."Vous recevrez dans les prochains jours un email confirmant ou refusant votre inscription.".$passage_ligne."Cordialement.".$passage_ligne."Pour plus d'infos : www.biellesmeusiennes.com".$passage_ligne."L'équipe des Bielles Meusiennes.";
-			$message_html = "
-				<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-				<html xmlns:v=\"urn:schemas-microsoft-com:vml\">
-					<head>
-    				<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">
-    				<meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0;\">
-    				<link href='https://fonts.googleapis.com/css?family=Playfair+Display' rel='stylesheet' type='text/css'>				
-				</head>
-				<body leftmargin=\"0\" topmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">
-
-				<table bgcolor=\"#c6dee7\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
-    				<tbody>
-    					<tr>   						
-    						<td bgcolor=\"#c6dee7\" valign=\"top\">
-      						<!--[if gte mso 9]>
-      							<v:rect xmlns:v=\"urn:schemas-microsoft-com:vml\" fill=\"true\" stroke=\"false\" style=\"mso-width-percent:1000;\">
-        						<v:fill type=\"tile\" src=\"http://hpics.li/17c220e\" color=\"#c6dee7\" />
-        						<v:textbox style=\"mso-fit-shape-to-text:true\" inset=\"0,0,0,0\">
-      						<![endif]-->
-      						<div>
-      							<table align=\"center\" width=\"590\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
-    								<tbody>
-    									<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr>
-    									<tr>
-    										<td align=\"center\" style=\"text-align: center;\">
-    											<a href=\"www.biellesmeusiennes.com\"><img src=\"https://image.jimcdn.com/app/cms/image/transf/dimension=950x10000:format=png/path/sd11703028ab4756b/image/ieeaadee850038c1f/version/1417873457/image.png\" width=\"950\" border=\"0\" alt=\bannière Bielles Meusiennes\"></a>
-    										</td>
-    									</tr>
-    									<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr>
-    									<tr>
-				    						<td style=\"font-family: 'Playfair Display', Helvetica, sans-serif; font-size: 40px; color: #5643C2; mso-line-height-rule: exactlty; line-height: 28px; \">Bonjour ".$donneesOwner['firstname']. " ".$donneesOwner['name'].",</td>    						
-				    					</tr>
-				    					<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr>  					
-				    					<tr>
-				    						<td style=\"font-family: 'Playfair Display', Helvetica, sans-serif; color: #5643C2; mso-line-height-rule: exactlty; line-height: 28px; \">nous avons bien pris en compte votre demande concernant le véhicule suivant :</td>    						
-				    					</tr>
-				    					<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr> 
-				    					<tr>
-				    						<td style=\"font-family: 'Playfair Display', Helvetica, sans-serif; color: #5643C2; mso-line-height-rule: exactlty; line-height: 28px; \">Marque : ".$donneesVehicle['marque']."</td>    						
-				    					</tr>
-				    					<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr> 
-				    					<tr>
-				    						<td style=\"font-family: 'Playfair Display', Helvetica, sans-serif; color: #5643C2; mso-line-height-rule: exactlty; line-height: 28px; \">Modèle : ".$donneesVehicle['model']."</td>    						
-				    					</tr>
-				    					<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr> 
-				    					<tr>
-				    						<td style=\"font-family: 'Playfair Display', Helvetica, sans-serif; color: #5643C2; mso-line-height-rule: exactlty; line-height: 28px; \">Immatriculation : ".$donneesVehicle['imat']."</td>    						
-				    					</tr>
-				    					<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr> 
-				    					<tr>
-				    						<td style=\"font-family: 'Playfair Display', Helvetica, sans-serif; color: #5643C2; mso-line-height-rule: exactlty; line-height: 28px; \">Date de mise en circulation : ".$donneesVehicle['date_circu']."</td>    						
-				    					</tr>
-				    					<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr>
-				    					<tr>
-				    						<td style=\"font-family: 'Playfair Display', Helvetica, sans-serif; color: #5643C2; mso-line-height-rule: exactlty; line-height: 28px; \">Vous recevrez dans les prochains jours un email confirmant ou refusant votre inscription.</td>    						
-				    					</tr>
-				    					<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr> 
-				    					<tr>
-				    						<td style=\"font-family: 'Playfair Display', Helvetica, sans-serif; color: #5643C2; mso-line-height-rule: exactlty; line-height: 28px; \">Cordialement</td>
-				    					</tr>
-				    					<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr>    					
-				    					<tr>
-				    						<td style=\"font-family: 'Playfair Display', Helvetica, sans-serif; color: #5643C2; mso-line-height-rule: exactlty; line-height: 28px; \">Pour plus d'infos : <a href=\"www.biellesmeusiennes.com\">Bielles Meusiennes</a></td>
-				    					</tr>
-				    					<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr> 
-				    					<tr>
-				    						<td style=\"font-family: 'Playfair Display', Helvetica, sans-serif; color: #5643C2; mso-line-height-rule: exactlty; line-height: 28px; \">L'équipe des Bielles Meusiennes</td>
-				    					</tr>
-				    					<tr>
-    										<td height=\"30\" style=\"font-size: 30px; line-height: 30px;\">
-    											&nbsp;
-    										</td>
-    									</tr>    		
-				    				</tbody>
-    							</table>
-      					    </div>
-      							<!--[if gte mso 9]>
-							        </v:textbox>
-							    	</v:rect>
-							  	<![endif]-->
-							</td>
-    					</tr>
-    									
-    				</tbody>
-				</table>
-
-				</html>
-				";
+			$message_html = file_get_contents('././includes/App/Views/mails/inscription.html');
+			$message_html = mail_all_update($message_html, [
+				["%firstname%", $donneesOwner['firstname']],
+				["%name%", $donneesOwner['name']],
+				["%marque%", $donneesVehicle['marque']],
+				["%model%", $donneesVehicle['model']],
+				["%immat%", $donneesVehicle['imat']],
+				["%date_circu%", $donneesVehicle['date_circu']]
+				]
+				);
 			//==========
 			//=====Création du message.
 			$message = $passage_ligne."--".$boundary.$passage_ligne;
