@@ -1,0 +1,19 @@
+{
+    "name": "biellesmeusiennes/formulaire",
+    "authors": [
+        {
+            "name": "JcPires",
+            "email": "djyss@live.fr"
+        }
+    ],
+    "require": {
+        "spipu/html2pdf": "^4.5",
+        "csanquer/colibri-csv": "1.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "includes/Core",
+            "App\\": "includes/App"
+        }
+    }
+}
