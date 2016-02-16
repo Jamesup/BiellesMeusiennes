@@ -7,13 +7,6 @@ include_once('./includes/common/verif_security.php');
 include_once('./includes/common/mailing.php');
 include_once('./includes/public/functions.php');
 
-envoi_mail("inscription", 'user@localhost.io', 
-	['firstname' => 'Jérémy',
-	'name' => 'Hindenoch'],
-	['marque' => 'Opel',
-	'model' => 'Corsa',
-	'imat' => '12/01/1956']);
-
 try {
 	verif_origin_user();
 } catch (Exception $e) {
