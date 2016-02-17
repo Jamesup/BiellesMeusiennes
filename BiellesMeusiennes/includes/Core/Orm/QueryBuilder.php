@@ -6,7 +6,8 @@ namespace Core\Orm;
  * Class QueryBuilder
  * @package Core\Orm
  */
-Class QueryBuilder {
+Class QueryBuilder
+{
 
     /**
      * @var
@@ -23,6 +24,10 @@ Class QueryBuilder {
     /**
      * @var
      */
+    private $table;
+    /**
+     * @var
+     */
     private $model;
     /**
      * @var bool
@@ -32,7 +37,8 @@ Class QueryBuilder {
     /**
      * @param $db
      */
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
@@ -40,10 +46,10 @@ Class QueryBuilder {
      * @param $table
      * @return $this
      */
-    private function find($table) {
-        $this->statement = "SELECT * FROM ".$table;
-        $this->model = 'App\\Models\\';
-        $this->model .= ucfirst($table);
+    private function find($table)
+    {
+        $this->statement = "SELECT * FROM " . $table;
+        $this->__setTableModel($table);
         return $this;
     }
 
@@ -51,7 +57,8 @@ Class QueryBuilder {
      * @param $table
      * @return $this
      */
-    public function findOne($table) {
+    public function findOne($table)
+    {
         $this->find($table);
         $this->one = true;
         return $this;
@@ -61,8 +68,39 @@ Class QueryBuilder {
      * @param $table
      * @return $this
      */
-    public function findAll($table) {
+    public function findAll($table)
+    {
         $this->find($table);
+        return $this;
+    }
+
+    /**
+     * @param $table
+     * @return $this
+     */
+    public function contain($table)
+    {
+        $this->statement .= " LEFT JOIN " . $table . " ON (" . $this->table . ".id = " . $table . "." . substr_replace($this->table, '', -1) . "_id ) ";
+        return $this;
+    }
+
+    public function save($table, $datas)
+    {
+
+        $this->statement .= 'INSERT INTO ' . $table;
+        $this->statement .= ' (';
+        foreach ($datas as $key => $value) {
+            $this->statement .= $key . ', ';
+        }
+        $this->statement .= ' created ) VALUES (';
+
+        foreach ($datas as $key => $value) {
+            $this->statement .= ':' . $key . ', ';
+        }
+        $this->statement .= ' NOW() ) ';
+        $this->__setTableModel($table);
+        $this->attributes = $datas;
+        $this->find_method = false;
         return $this;
     }
 
@@ -70,15 +108,54 @@ Class QueryBuilder {
      * @param array $attributes
      * @return $this
      */
-    public function where($attributes = []) {
+    public function where($attributes = [])
+    {
         $this->statement .= " WHERE ";
-        foreach( $attributes as $k => $v ) {
-                $this->statement .= $k." = :".$k." AND ";
+        foreach ($attributes as $k => $v) {
+
+            if (!is_array($v)) {
+                $a = explode('.', $k);
+                $a = end($a);
+                $this->statement .= $k . " = :" . $a . " AND ";
+            } else {
+                $this->statement .= $k . " IN (";
+                foreach ($v as $kk => $val) {
+                    if ((count($v) -1) != $kk) {
+                        $this->statement .= ":".$k.$kk.", ";
+                    } else {
+                        $this->statement .= ":".$k.$kk." ";
+                    }
+                }
+                $this->statement .=  ")";
+            }
         }
         if (substr($this->statement, -4) === "AND ") {
-            $this->statement = trim($this->statement, "AND ");
+            $this->statement = str_replace("AND " , "", $this->statement);
         }
         $this->attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * @param $table
+     * @return $this
+     */
+    public function update($table, $conditions, $newValues)
+    {
+        $this->statement .= "UPDATE ".$table." SET ";
+        foreach ($newValues as $col => $val) {
+            $this->statement .= $col." = :".$col." ";
+        }
+        $this->statement .= "WHERE ";
+        foreach ($conditions as $col => $val) {
+            $a = explode('.', $col);
+            $a = end($a);
+            $this->statement .= $col . " = :" . $a . " AND ";
+            if (substr($this->statement, -4) === "AND ") {
+                $this->statement = str_replace("AND " , "", $this->statement);
+            }
+        }
+        $this->attributes = array_merge($conditions, $newValues);;
         return $this;
     }
 
@@ -86,16 +163,51 @@ Class QueryBuilder {
      * @param $limit
      * @return $this
      */
-    public function limit($limit) {
-        $this->statement .= " LIMIT ".$limit;
+    public function limit($limit)
+    {
+        $this->statement .= " LIMIT " . $limit;
         return $this;
     }
 
     /**
+     * @param $table
+     * @return $this
+     */
+    public function delete($table)
+    {
+        $this->statement .= "DELETE FROM ".$table;
+        return $this;
+    }
+
+    /**
+     * @param $table
+     * @return $this
+     */
+    public function deleteAll($table)
+    {
+        $this->statement .= "truncate table ".$table;
+        return $this;
+    }
+
+
+    /**
      * @return mixed
      */
-    public function execute(){
+    public function execute()
+    {
         return $this->db->q($this->statement, $this->attributes, $this->model, $this->one);
+    }
+
+    /**
+     * @param $table
+     * @return $this
+     */
+    private function __setTableModel($table)
+    {
+        $this->table = strtolower($table);
+        $this->model = 'App\\Models\\';
+        $this->model .= ucfirst($table);
+        return $this;
     }
 
 }

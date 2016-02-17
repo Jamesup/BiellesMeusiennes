@@ -9,11 +9,13 @@ include('../common/connexion.php');
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
 <head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
-<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="language" content="fr" />
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
 </head>
+
 <?php
 
 
@@ -30,31 +32,31 @@ include("../admin/functions.php");
 include("../admin/constants.php");
 ?>
 
-<?php
-
-
-
-?>
 
 <?php
 if (empty($_POST['username'])) // Si on la variable est vide, on peut considérer qu'on est sur la page de formulaire
 {
-	echo '<h1>Enregistrement nouveau administrateur</h1>';
+	echo '<div class="form-register">';
+	echo '<div class="panel panel-default">';
+	echo '<h3>Enregistrement d\'un nouveau administrateur</h3>';
+	echo '<div class="container-fluid">';
 	echo '<form method="post" action="register_admin.php" enctype="multipart/form-data">
+	
 	<fieldset><legend>Identifiants</legend>
-	<label for="username">* Identifiant :</label>  <input name="username" type="text" id="username" /> (l/identifiant doit contenir entre 3 et 15 caractères)<br />
-	<label for="password">* Mot de Passe :</label><input type="password" name="password" id="password" /><br />
-	<label for="confirm">* Confirmer le mot de passe :</label><input type="password" name="confirm" id="confirm" />
-	</fieldset>
-	<fieldset><legend>Contacts</legend>
-	<label for="email">* Votre adresse Mail :</label><input type="text" name="email" id="email" /><br />
+	<label for="username">* Identifiant :</label>  <input class="form-control input-sm" id="inputsm" name="username" type="text" id="username" /> <i>(L\' identifiant doit contenir entre 3 et 15 caractères)</i><br />
+	<label for="password">* Mot de Passe :</label><input class="form-control input-sm" id="inputsm" type="password" name="password" id="password" /><br />
+	<label for="confirm">* Confirmer le mot de passe :</label><input class="form-control input-sm" id="inputsm" type="password" name="confirm" id="confirm" />
 	</fieldset>
 	
-	<p>Les champs précédés d un * sont obligatoires</p>
-	<p><input type="submit" value="S\'enregistrer" /></p></form>
-	</div>
-	</body>
-	</html>';
+	</br>
+	
+	<fieldset><legend>Contacts</legend>
+	<label for="email">* Votre adresse Mail :</label><input class="form-control input-sm" id="inputsm" type="text" name="email" id="email" /><br />
+	</fieldset>
+	
+	<p><i>* champs obligatoires</i></p>
+	<p><input type="submit" class="btn btn-primary" value="S\'enregistrer" /> <input type="reset" class=" btn btn-warning" value="Effacer" /></p></p></form>
+	</div></div></div></div>';
 	
 	
 } //Fin de la partie formulaire
@@ -128,23 +130,27 @@ else //On est dans le cas traitement
 <?php
    if ($i==0)
    {
-	echo'<h1>Enregistrement terminée</h1>';
-        echo'<p> '.stripslashes(htmlspecialchars($_POST['username'])).' vous êtes enregistré</p>
-	<p>Cliquez <a href="../../admin/index.php">ici</a> pour revenir à la page d accueil</p>';
-	
+        echo '<div class="form-register-ok">';
+        echo '<div class="panel panel-default">';
+        echo'<h3>Enregistrement terminée</h3>';
+        echo '<div class="container-fluid">';
+        echo'<div class="alert alert-success">';
+        echo'<p> '.stripslashes(htmlspecialchars($_POST['username'])).' vous êtes enregistrer</p>';
+        echo'</div>';
+        echo '<p>Cliquez <a href="../admin/index.php">ici</a> pour revenir à la page d accueil</p>';
+        echo'</div></div></div>';
+    
         //La ligne suivante sera commentée plus bas
-	
+    
    
         $query=$bdd->prepare('INSERT INTO users (username, password, email)
         VALUES (:username, :password, :email)');
-	$query->bindValue(':username', $username, PDO::PARAM_STR);
-	$query->bindValue(':password', $password, PDO::PARAM_INT);
-	$query->bindValue(':email', $email, PDO::PARAM_STR);
-
-	
+    $query->bindValue(':username', $username, PDO::PARAM_STR);
+    $query->bindValue(':password', $password, PDO::PARAM_INT);
+    $query->bindValue(':email', $email, PDO::PARAM_STR);
+    
         $query->execute();
-
-	//Et on définit les variables de sessions
+    //Et on définit les variables de sessions
         $_SESSION['username'] = $username;
         $_SESSION['id'] = $bdd->lastInsertId(); ;
       
@@ -152,17 +158,24 @@ else //On est dans le cas traitement
     }
     else
     {
-        echo'<h1>Enregistrement interrompue</h1>';
-        echo'<p>Une ou plusieurs erreurs se sont produites pendant l incription</p>';
-        echo'<p>'.$i.' erreur(s)</p>';
+     
+        echo '<div class="form-register-error">';
+        echo '<div class="panel panel-default">';
+        echo'<h3>Enregistrement interrompue</h3>';
+        echo '<div class="container-fluid">';
+        echo'<div class="alert alert-danger">';
+        echo'<p>Une ou plusieurs erreurs se sont produites pendant l\' incription</p>';
+        echo'<p><b>'.$i.' erreur(s)</b></p>';
         echo'<p>'.$username_erreur1.'</p>';
         echo'<p>'.$username_erreur2.'</p>';
         echo'<p>'.$password_erreur.'</p>';
         echo'<p>'.$email_erreur1.'</p>';
         echo'<p>'.$email_erreur2.'</p>';
+        echo'</div>';
  
        
-        echo'<p>Cliquez <a href="../admin/register_admin.php">ici</a> pour recommencer</p>';
+        echo'<p>Cliquez <a href="./register_admin.php">ici</a> pour recommencer</p>';
+        echo'</div></div></div>';
     }
 }
 ?>
