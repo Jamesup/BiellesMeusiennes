@@ -3,6 +3,12 @@ require "../vendor/autoload.php";
 use Core\Configure\Config;
 use Core\Export\DataExporter;
 
-$membres = Config::QueryBuilder()->findAll("Owners")->execute();
+
+$membre = Config::QueryBuilder()->findOne("Owners")->where(['id' =>18])->execute();
+var_dump($membre);
+die();
+
+
+
 $pdf = new DataExporter('test', 'pdf');
-$pdf->setPdfAttributes('l', 'A4', 'fr', 'default')->export($membres);
+$pdf->setPdfAttributes('l', 'A4', 'fr', 'default')->export($membre);

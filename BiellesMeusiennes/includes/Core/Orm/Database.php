@@ -67,13 +67,48 @@ Class Database {
      */
     public function q($statement, $attributes, $class_name, $first = false) {
         $req = $this->getPDO()->prepare($statement);
-        $req->execute($attributes);
-        $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
-        if ( $first ) {
-            $datas = $req->fetch();
-        } else {
-            $datas = $req->fetchAll();
+        if ( $attributes ) {
+            $at = [];
+            foreach($attributes as $attr => $val) {
+                $a = explode('.', $attr);
+                $a = end($a);
+                $at[$a] = $val;
+                if (is_array($val)){
+                    $at = [];
+                    foreach ($val as $k => $v) {
+                        $at[$a.$k] = $v;
+                    }
+                }
+            }
+            $attributes = $at;
         }
-        return $datas;
+        try {
+            $req->execute($attributes);
+        } catch (\PDOException $e) {
+            return false;
+        }
+        switch (substr($statement, 0 , 6)) {
+            case "INSERT":
+                return intval($this->getPDO()->lastInsertId());
+                break;
+            case "DELETE":
+                return true;
+                break;
+            case "SELECT":
+                $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
+                if ( $first ) {
+                    $datas = $req->fetch();
+                } else {
+                    $datas = $req->fetchAll();
+                }
+                return $datas;
+                break;
+            case "trunca":
+                return true;
+                break;
+            case "UPDATE":
+                return true;
+                break;
+        }
     }
 }
