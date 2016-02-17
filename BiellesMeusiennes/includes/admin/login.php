@@ -1,12 +1,11 @@
 <?php
 
+include('../includes/common/verif_security.php'); 
+
 //Cette fonction doit être appelée avant tout code html
-session_start();
+generer_token();
 
-include('../common/connexion.php'); 
-
-include('../common/header.php'); //contient le header.
-
+include('../includes/common/connexion.php'); 
 
 //Attribution des variables de session
 
@@ -14,16 +13,9 @@ $id=(isset($_SESSION['id']))?(int) $_SESSION['id']:0;
 $username=(isset($_SESSION['username']))?$_SESSION['username']:'';
 
 //On inclue les 2 pages restantes
-include("../admin/functions.php");
-include("../admin/constants.php");
-?>
+include('../includes/admin/functions.php');
+include('../includes/admin/constants.php');
 
-<?php
-
-
-?>
-
-<?php
 if (!isset($_POST['username'])) //On est dans la page de formulaire
 {
 	echo '<form method="post" action="login.php">
@@ -35,7 +27,7 @@ if (!isset($_POST['username'])) //On est dans la page de formulaire
 	</p>
 	</fieldset>
 	<p><input type="submit" value="Connexion" /></p></form>
-	<a href="../admin/register_admin.php">Creer un compte administrateur</a>
+	<a href="../includes/admin/register_admin.php">Creer un compte administrateur</a>
 	 
 	</div>
 	</body>
