@@ -1,8 +1,6 @@
 
 <?php
 
-
-
 include('./includes/common/connexion.php');
 
 //fonction qui enregistre l'inscription dans la bdd  /!\ IL MANQUE DES CHAMPS A AJOUTER PAR RAPPORT AU FORMULAIRE /!\

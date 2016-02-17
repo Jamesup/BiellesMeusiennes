@@ -129,8 +129,8 @@ else //On est dans le cas traitement
    if ($i==0)
    {
 	echo'<h1>Enregistrement terminée</h1>';
-        echo'<p> '.stripslashes(htmlspecialchars($_POST['username'])).' vous êtes enregistrer</p>
-	<p>Cliquez <a href="./admin/index.php">ici</a> pour revenir à la page d accueil</p>';
+        echo'<p> '.stripslashes(htmlspecialchars($_POST['username'])).' vous êtes enregistré</p>
+	<p>Cliquez <a href="../../admin/index.php">ici</a> pour revenir à la page d accueil</p>';
 	
         //La ligne suivante sera commentée plus bas
 	
@@ -162,7 +162,7 @@ else //On est dans le cas traitement
         echo'<p>'.$email_erreur2.'</p>';
  
        
-        echo'<p>Cliquez <a href="./register_admin.php">ici</a> pour recommencer</p>';
+        echo'<p>Cliquez <a href="../admin/register_admin.php">ici</a> pour recommencer</p>';
     }
 }
 ?>
