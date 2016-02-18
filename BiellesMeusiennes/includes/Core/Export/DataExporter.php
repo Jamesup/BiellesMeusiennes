@@ -85,7 +85,7 @@ Class DataExporter {
      */
     public function getCsv($datas)
     {
-        $filePath = '../'.$this->filename.'.csv';
+        $filePath = $this->filename.'.csv';
         $writer = new CsvWriter(array(
             'delimiter' => ';',
             'enclosure' => '"',
@@ -108,7 +108,7 @@ Class DataExporter {
         $fh         = fopen($filePath, 'r');
         $read       = 0;
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . $this->filename.".csv" . '"');
+        header('Content-Disposition: attachment; filename="' . str_replace('../', '', $this->filename).".csv" . '"');
         while (!feof($fh)) {
             echo fread($fh, $maxRead);
         }

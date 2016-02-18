@@ -143,8 +143,14 @@ Class QueryBuilder
     public function update($table, $conditions, $newValues)
     {
         $this->statement .= "UPDATE ".$table." SET ";
+        $lastKey = end($newValues);
+        $lastKey = key($newValues);
         foreach ($newValues as $col => $val) {
-            $this->statement .= $col." = :".$col." ";
+            if ($lastKey != $col) {
+                $this->statement .= $col." = :".$col." , ";
+            } else {
+                $this->statement .= $col." = :".$col." ";
+            }
         }
         $this->statement .= "WHERE ";
         foreach ($conditions as $col => $val) {
@@ -189,13 +195,26 @@ Class QueryBuilder
         return $this;
     }
 
-
+    /**
+     * @param $table
+     * @return $this
+     */
+    public function orderBy($order)
+    {
+        $this->statement .= " ORDER BY ";
+        foreach ($order as $k => $v) {
+            $this->statement .= $k. " ". $v;
+        }
+        return $this;
+    }
     /**
      * @return mixed
      */
     public function execute()
     {
-        return $this->db->q($this->statement, $this->attributes, $this->model, $this->one);
+        $query =  $this->db->q($this->statement, $this->attributes, $this->model, $this->one);
+        $this->__reset();
+        return $query;
     }
 
     /**
@@ -209,5 +228,15 @@ Class QueryBuilder
         $this->model .= ucfirst($table);
         return $this;
     }
-
+    /**
+     * @param $table
+     * @return $this
+     */
+    private function __reset()
+    {
+        $this->statement ="";
+        $this->attributes =[];
+        $this->model= "";
+        $this->one = false;
+    }
 }
