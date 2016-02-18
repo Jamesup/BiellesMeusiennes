@@ -2,20 +2,25 @@
 require "../vendor/autoload.php";
 
 use Core\Mailer\Mail;
+use Core\Configure\Config;
+use Core\Export\DataExporter;
 
+$participants = Config::QueryBuilder()->findAll("Owners")->execute();
+
+$pdf = new DataExporter('test', 'pdf');
+$pdf->setPdfAttributes('l', 'A4', 'fr', 'default');
+$resultPdf = $pdf->save($participants);
 
 $content_text = "voici du text non formaté \r\n et ici c'est une autre ligne";
 $content_html = "<p>Voici du text qui <b> cette fois </b> est formaté</p>";
+
 $pjs = [
     [
-        'path' => 'le/chemin/du/fichier.file',
-        'name' => 'nom du fichier'
-    ],
-    [
-        'path' => 'le/chemin/du/fichier2.file',
-        'name' => 'nom du fichier2'
+        'path' => $resultPdf,
+        'name' => $pdf->filename.'.pdf'
     ]
 ];
+
 $receiver_mail = 'djyss@live.fr';
 $receiver_name = "Jc Pires";
 $subject = "Envoi de mail test";
