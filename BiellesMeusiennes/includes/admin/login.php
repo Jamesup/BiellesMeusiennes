@@ -1,24 +1,47 @@
 <?php
 
+<<<<<<< HEAD
 include('../includes/common/verif_security.php'); 
 
 //Cette fonction doit être appelée avant tout code html
 generer_token();
 
 include('../includes/common/connexion.php'); 
+=======
+ 
+>>>>>>> origin/master
 
 //Attribution des variables de session
 
 $id=(isset($_SESSION['id']))?(int) $_SESSION['id']:0;
 $username=(isset($_SESSION['username']))?$_SESSION['username']:'';
 
+<<<<<<< HEAD
 //On inclue les 2 pages restantes
 include('../includes/admin/functions.php');
 include('../includes/admin/constants.php');
 
+=======
+
+
+>>>>>>> origin/master
 if (!isset($_POST['username'])) //On est dans la page de formulaire
 {
-	echo '<form method="post" action="login.php">
+	include('../includes/common/connexion.php');
+	//On inclue les 2 pages restantes
+	include('../includes/admin/functions.php');
+	include('../includes/admin/constants.php');
+
+	if (isset($_GET['message'])) {
+		if ($_GET['message'] == "errorlogin") {
+			echo '<div><p>Une erreur s\'est produite pendant votre identification.<br /> Le mot de passe ou l\'identifiant entrÃ© n\'est pas correct.</p></div>';
+		}
+		else if ($_GET['message'] =="errorchampmanquant") {
+			echo '<div><p>une erreur s\'est produite pendant votre identification. Vous devez remplir tous les champs</p></div>';
+		}
+	}
+
+	echo '<form method="post" action="../includes/admin/login.php">
 	<fieldset>
 	<legend>Connexion</legend>
 	<p>
@@ -36,12 +59,15 @@ if (!isset($_POST['username'])) //On est dans la page de formulaire
 
 else
 {
+	include('../common/connexion.php');
+	//On inclue les 2 pages restantes
+	include('../admin/functions.php');
+	include('../admin/constants.php');
+
     $message='';
     if (empty($_POST['username']) || empty($_POST['password']) ) //Oublie d'un champ
     {
-        $message = '<p>une erreur s\'est produite pendant votre identification.
-	Vous devez remplir tous les champs</p>
-	<p>Cliquez <a href="./login.php">ici</a> pour revenir</p>';
+        header('Location: http://localhost/BiellesMeusiennes-1/BiellesMeusiennes/admin/index.php?message=errorchampmanquant');
     }
     else //On check le mot de passe
     {
@@ -55,19 +81,11 @@ else
 	{
 	    $_SESSION['username'] = $data['username'];
 	    $_SESSION['id'] = $data['id'];
-	    $message = '<p>'.$data['username'].', 
-			vous êtes maintenant connecté!</p>
-			<p>Cliquez <a href="./index.php">ici</a> 
-			</p>';  
+	    header('Location: http://localhost/BiellesMeusiennes-1/BiellesMeusiennes/includes/admin/dashboard.php');  
 	}
 	else // Acces pas OK !
 	{
-	    $message = '<p>Une erreur s\'est produite 
-	    pendant votre identification.<br /> Le mot de passe ou l/identifiant
-            entré n\'est pas correcte.</p><p>Cliquez <a href="./login.php">ici</a> 
-	    pour revenir à la page précédente
-	    <br /><br />Cliquez <a href="./index.php">ici</a> 
-	    pour revenir à la page d accueil</p>';
+	    header('Location: http://localhost/BiellesMeusiennes-1/BiellesMeusiennes/admin/index.php?message=errorlogin');
 	}
     $query->CloseCursor();
     }
@@ -75,4 +93,3 @@ else
 
 }
 ?>
-
