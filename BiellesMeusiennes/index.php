@@ -83,8 +83,7 @@ try {
 
 				/* envoi emails*/
 			envoi_mail("inscription", $donneesOwner['email'], $owner_id);
-			envoi_mail("nouvel_inscrit", "localhost@local.io", $owner_id);
-			envoi_mail("confirmation", $donneesOwner['email'], $owner_id);
+			envoi_mail("nouvel_inscrit", "localhost@local.io", $owner_id);			
 				/*  */
 
 			/* retour à la page des Bielles Meusiennes avec un message de réussite ou d'erreur */

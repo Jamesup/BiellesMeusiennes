@@ -83,6 +83,24 @@ function envoi_mail ($action, $mail , $owner_id) {
 				]);
 			//==========	
 			break;
+		case "refus" :
+			$participant = Config::QueryBuilder()->findOne("Owners")->contain('Vehicles')->where(['owners.id' => $owner_id])->execute();
+			
+			//=====Définition du sujet.			
+			$subject = "RétroMeus'auto 2016 - refus d'inscription d'un véhicule";
+			//=========
+			$content_text = "Bonjour " .$participant->firstname. " ".$participant->lastname.", \r\n Vous nous avez soumis une demande d'inscription du véhicule suivant : \r\n Marque : ".$participant->marque." \r\n Modèle : ".$participant->model."\r\n Immatriculation : ".$participant->imat."\r\n Date de mise en circulation : ".$participant->date_circu."\r\n Malheureusement, celui-ci ne corespond pas aux critères précisés dans le règlement intérieur de la manifestation. \r\n Par conséquent, nous sommes au regret de vous informer que celui-ci ne pourra être inscrit pour le RetroMeus'Auto 2016. \r\n Vous avez toutefois la possibilité d'inscrire un autre véhicule lors de la manifestation, ou de nous rejoindre en tant que visiteur. \r\n Pour plus d'infos : www.biellesmeusiennes.com \r\n L'équipe des Bielles Meusiennes.";
+			$content_html = file_get_contents('./includes/App/Views/mails/base_mail_refus.html');
+			$content_html = mail_all_update($content_html, [
+				["%user_name%", $participant->firstname . " " . $participant->lastname],				
+				["%marque%", $participant->marque],
+				["%model%", $participant->model],
+				["%immat%", $participant->imat],
+				["%date_circu%", $participant->date_circu]
+				]);
+			$pjs= "";	
+			
+			break;
 		default : 
 			throw new Exception ("error");
 			break;
