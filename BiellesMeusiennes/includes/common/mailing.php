@@ -1,158 +1,102 @@
 <?php
 
+require "./vendor/autoload.php";
 include_once('./includes/common/functions.php');
 
-function envoi_mail ($action, $mail , $donneesOwner, $donneesVehicle) {
+use Core\Mailer\Mail;
+use Core\Configure\Config;
+use Core\Export\DataExporter;
 
-	if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)) // On filtre les serveurs qui rencontrent des bogues.
-	{
-		$passage_ligne = "\r\n";
-	}
-	else
-	{
-		$passage_ligne = "\n";
-	}
-
-	//=====Création de la boundary
-	$boundary = "-----=".md5(rand());
-	$boundary_alt = "-----=".md5(rand());
-	//==========
-
-	//=====Création du header de l'e-mail
-	$header = "From: <adminEnvoiBiellesMeusiennes@localhost.io>".$passage_ligne;	
-	$header .= "MIME-Version: 1.0".$passage_ligne;
-	//==========
+function envoi_mail ($action, $mail , $owner_id) {
 
 	switch ($action) {
-		case "inscription" :		
-			$header .= "Content-Type: multipart/alternative;".$passage_ligne." boundary=\"$boundary\"".$passage_ligne;	
+		case "inscription" :
 
+			$participant = Config::QueryBuilder()->findOne("Owners")->contain('Vehicles')->where(['owners.id' => $owner_id])->execute();		
+			
 			//=====Définition du sujet.			
-			$sujet = '=?utf-8?B?'.base64_encode("RétroMeus'auto 2016 - préinscription").'?=';
+			$subject = "RétroMeus'auto 2016 - préinscription";
 			//=========
-			//=====Déclaration des messages au format texte et au format HTML.
-			$message_txt = "Bonjour " .$donneesOwner['firstname']. " ".$donneesOwner['lastname'].",".$passage_ligne."nous avons bien pris en compte votre demande concernant le véhicule suivant :".$passage_ligne."Marque : ".$donneesVehicle['marque'].$passage_ligne."Modèle : ".$donneesVehicle['model'].$passage_ligne."Immatriculation : ".$donneesVehicle['imat'].$passage_ligne."Date de mise en circulation : ".$donneesVehicle['date_circu'].$passage_ligne."Vous recevrez dans les prochains jours un email confirmant ou refusant votre inscription.".$passage_ligne."Cordialement.".$passage_ligne."Pour plus d'infos : www.biellesmeusiennes.com".$passage_ligne."L'équipe des Bielles Meusiennes.";
-			$message_html = file_get_contents('././includes/App/Views/mails/base_mail.html');
-			$message_html = mail_all_update($message_html, [
-				["%firstname%", $donneesOwner['firstname']],
-				["%lastname%", $donneesOwner['lastname']],
-				["%marque%", $donneesVehicle['marque']],
-				["%model%", $donneesVehicle['model']],
-				["%immat%", $donneesVehicle['imat']],
-				["%date_circu%", $donneesVehicle['date_circu']],
-				["%message%"], "Bonjour " .$donneesOwner['firstname']. " ".$donneesOwner['lastname'].",\r\n nous avons bien pris en compte votre demande concernant le véhicule suivant : \r\n Marque : ".$donneesVehicle['marque']."\r\n Modèle : ".$donneesVehicle['model']."\r\n Immatriculation : ".$donneesVehicle['imat']."\r\n Date de mise en circulation : ".$donneesVehicle['date_circu']."\r\n Vous recevrez dans les prochains jours un email confirmant ou refusant votre inscription.\r\nCordialement.\r\nPour plus d'infos : www.biellesmeusiennes.com.\r\nL'équipe des Bielles Meusiennes.";]
-				]
-				);
-			//==========
-			//=====Création du message.
-			$message = $passage_ligne."--".$boundary.$passage_ligne;
-			//=====Ajout du message au format texte.
-			$message.= "Content-Type: text/plain; charset=\"UTF-8\"".$passage_ligne;
-			$message.= "Content-Transfer-Encoding: 8bit".$passage_ligne;
-			$message.= $passage_ligne.$message_txt.$passage_ligne;
-			//==========
-			$message.= $passage_ligne."--".$boundary.$passage_ligne;
-			//=====Ajout du message au format HTML
-			$message.= "Content-Type: text/html; charset=\"UTF-8\"".$passage_ligne;
-			$message.= "Content-Transfer-Encoding: 8bit".$passage_ligne;
-			$message.= $passage_ligne.$message_html.$passage_ligne;
-			//==========
-			$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
-			$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
-			//==========
+			
+			$content_text = "Bonjour " .$participant->firstname. " ".$participant->lastname.", \r\n nous avons bien pris en compte votre demande concernant le véhicule suivant : \r\n Marque : ".$participant->marque." \r\n Modèle : ".$participant->model."\r\n Immatriculation : ".$participant->imat."\r\n Date de mise en circulation : ".$participant->date_circu."\r\n Vous recevrez dans les prochains jours un email confirmant ou refusant votre inscription \r\n Cordialement. \r\n Pour plus d'infos : www.biellesmeusiennes.com \r\n L'équipe des Bielles Meusiennes.";
+			$content_html = file_get_contents('./includes/App/Views/mails/base_mail_inscription.html');
+			$content_html = mail_all_update($content_html, [
+				["%user_name%", $participant->firstname . " " . $participant->lastname],				
+				["%marque%", $participant->marque],
+				["%model%", $participant->model],
+				["%immat%", $participant->imat],
+				["%date_circu%", $participant->date_circu]
+				]);
+			$pjs= "";		
 			 		
 			break;
 		case "nouvel_inscrit" :
-			$header .= "Content-Type: multipart/alternative;".$passage_ligne." boundary=\"$boundary\"".$passage_ligne;
-
+			$participant = Config::QueryBuilder()->findOne("Owners")->contain('Vehicles')->where(['owners.id' => $owner_id])->execute();
+			
 			//=====Définition du sujet.			
-			$sujet = '=?utf-8?B?'.base64_encode("Nouvel inscrit à l'événement des Bielles Meusiennes").'?=';
+			$subject = "RétroMeus'auto 2016 - Nouvel inscrit";
 			//=========
 			//=====Déclaration des messages au format texte et au format HTML.
-			$message_txt = "Un nouvel utilisateur s'est inscrit. Veuillez procéder à sa validation sur le site administratif";
-			$message_html = "<html><head></head><body><b>Un nouvel utilisateur s'est inscrit</b>, Veuillez procéder à sa validation sur le <a href=\"\">site administratif</a>.</body></html>";
-			//==========
-
-			//=====Création du message.
-			$message = $passage_ligne."--".$boundary.$passage_ligne;
-			//=====Ajout du message au format texte.
-			$message.= "Content-Type: text/plain; charset=\"UTF-8\"".$passage_ligne;
-			$message.= "Content-Transfer-Encoding: 8bit".$passage_ligne;
-			$message.= $passage_ligne.$message_txt.$passage_ligne;
-			//==========
-			$message.= $passage_ligne."--".$boundary.$passage_ligne;
-			//=====Ajout du message au format HTML
-			$message.= "Content-Type: text/html; charset=\"UTF-8\"".$passage_ligne;
-			$message.= "Content-Transfer-Encoding: 8bit".$passage_ligne;
-			$message.= $passage_ligne.$message_html.$passage_ligne;
-			//==========
-			$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
-			$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
-			//==========
+			$content_text = "Un nouvel utilisateur s'est inscrit. Veuillez procéder à sa validation sur le site administratif";
+			$content_html = file_get_contents('./includes/App/Views/mails/base_mail_inscription_admin.html');
+			$content_html = mail_all_update($content_html, [
+				["%marque%", $participant->marque],
+				["%model%", $participant->model],
+				["%immat%", $participant->imat],
+				["%date_circu%", $participant->date_circu],
+				["%user_name%", "Admin"],
+				["%firstname%", $participant->firstname],
+				["%lastname%", $participant->lastname]
+				]);
+			//==========			
+			$pjs= "";
 			break;
 
 		/* autres cas ... */
-		case "confirmation" : 
+		case "confirmation" :
 
-			$header .= "Content-Type: multipart/mixed;".$passage_ligne." boundary=\"$boundary\"".$passage_ligne;
+			$participant = Config::QueryBuilder()->findOne("Owners")->contain('Vehicles')->where(['owners.id' => $owner_id])->execute();
+
+			$pdf = new DataExporter('test', 'pdf');
+			$pdf->setPdfAttributes('l', 'A4', 'fr', 'fiche_auto');
+			$resultPdf = $pdf->save([$participant]);
+
+			$pjs = [
+			    [
+			        'path' => $resultPdf,
+			        'name' => $pdf->filename.'.pdf'
+			    ]
+			];	
 
 			//=====Définition du sujet.			
-			$sujet = '=?utf-8?B?'.base64_encode("Validation de votre inscription à l'évênement des Bielles Meusiennes").'?=';
+			$subject = "Validation de votre inscription à l'évênement des Bielles Meusiennes";
 			//=========
-			//=====Déclaration des messages au format texte et au format HTML.
-			$message_txt = "Votre inscription a été validée. Veuillez recevoir en pièce jointe votre fiche auto à placer sur le pare brise de votre véhicule lors de l'événement";
-			$message_html = "<html><head></head><body><b>Votre inscription a été validée.</b>, Veuillez recevoir en pièce jointe votre fiche auto à placer sur le pare brise de votre véhicule lors de l'événement.</body></html>";
-			//==========
-
-			//==========Lecture et mise en forme de la pièce jointe.
-			$fichier   = fopen("././assets/doc/test.pdf", "r");   
-			$attachement = fread($fichier, filesize("././assets/doc/test.pdf")); 
-			$attachement = chunk_split(base64_encode($attachement));
-			fclose($fichier); 
-			//==========
-
-			//=====Création du message.
-			$message = $passage_ligne."--".$boundary.$passage_ligne;			
-			$message.= "Content-Type: multipart/alternative;".$passage_ligne." boundary=\"$boundary_alt\"".$passage_ligne;
-			$message.= $passage_ligne."--".$boundary_alt.$passage_ligne;
-			//=====Ajout du message au format texte.	
-			$message.= "Content-Type: text/plain; charset=\UTF-8\"".$passage_ligne;
-			$message.= "Content-Transfer-Encoding: 8bit".$passage_ligne;
-			$message.= $passage_ligne.$message_txt.$passage_ligne;
-			//==========
-
-			$message.=$passage_ligne."--".$boundary_alt.$passage_ligne;
-					
-			//=====Ajout du message au format HTML
-			$message.= "Content-Type: text/html; charset=\"UTF-8\"".$passage_ligne;
-			$message.= "Content-Transfer-Encoding: 8bit".$passage_ligne;
-			$message.= $passage_ligne.$message_html.$passage_ligne;
-			//==========
-
-			//On erme la boundery alternative
-			$message_txt.= $passage_ligne."--".$boundary_alt."--".$passage_ligne;
-			//==========
-
-			$message.= $passage_ligne."--".$boundary.$passage_ligne;
 			
-			//==========Ajout de la pièce jointe
-			$message.= "Content-Type: application/pdf; name=\"test.pdf\"".$passage_ligne;
-			$message.= "Content-Transfer-Encoding: base64".$passage_ligne;
-			$message.= "Content-Disposition: attachement; filename=\"test.pdf\"".$passage_ligne;
-			$message.= $passage_ligne.$attachement.$passage_ligne.$passage_ligne;
-			$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
-
+			$content_text = "Bonjour " .$participant->firstname. " ".$participant->lastname.", \r\n Félicitation ! \r\n Le véhicule suivant est inscrit sur le site des Bielles Meusiennes: \r\n Marque : ".$participant->marque." \r\n Modèle : ".$participant->model."\r\n Immatriculation : ".$participant->imat."\r\n Date de mise en circulation : ".$participant->date_circu." \r\n Vous trouverez joint à ce mail deux documents : \r\n   - le premier est à afficher sur le pare-brise du véhicule lors de la manifestation. \r\n   - le second est à donner aux bénévoles présents à l'entrée du site. \r\n Enfin, pour retirer une plaque rallye, veuillez vous présenter à l'espace spécifique sur le site muni de cet email. \r\n Au plaisir de vous retrouver lors de RetroMeuse' Auto 2016 ! \r\n Pour plus d'infos : www.biellesmeusiennes.com \r\n L'équipe des Bielles Meusiennes.";
+			$content_html = file_get_contents('./includes/App/Views/mails/base_mail_confirmation.html');
+			$content_html = mail_all_update($content_html, [
+				["%user_name%", $participant->firstname . " " . $participant->lastname],				
+				["%marque%", $participant->marque],
+				["%model%", $participant->model],
+				["%immat%", $participant->imat],
+				["%date_circu%", $participant->date_circu]
+				]);
+			//==========	
 			break;
 		default : 
 			throw new Exception ("error");
 			break;
 	}	
+	
+	$receiver_mail = $mail;
+	$receiver_name = $participant->firstname . " " . $participant->lastname;	
 
-	//=====Envoi de l'e-mail.
-	mail($mail, $sujet, $message, $header);
-	//==========
-
-
+	$mail = new Mail();
+	try {
+		$mail->send($receiver_mail, $receiver_name, $subject, $content_text, $content_html, $pjs); //pjs est optionnel
+	} catch (Exception $e) {
+		throw $e;
+	}
 }
 
 ?>

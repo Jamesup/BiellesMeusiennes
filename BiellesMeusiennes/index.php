@@ -17,12 +17,12 @@ try {
 }
 
 /* vérification du captcha*/
-$captcha = new Recaptcha ('6LdLehgTAAAAAFmYf4DDe7hadxGYRfDiuw2UMgCr', '6LdLehgTAAAAAG05QDDI0YknJWRASpPYoly9y4Cp');
-if (!empty($_POST)) {
-	if ($captcha->isValid($_POST['g-recaptcha-response']) == false) {
+/*$captcha = new Recaptcha ('6LdLehgTAAAAAFmYf4DDe7hadxGYRfDiuw2UMgCr', '6LdLehgTAAAAAG05QDDI0YknJWRASpPYoly9y4Cp');
+*/if (!empty($_POST)) {
+	/*if ($captcha->isValid($_POST['g-recaptcha-response']) == false) {
 		header('Location: http://localhost/site distant autorise/hack.html');
 		die();
-	}
+	}*/
 
 
 
@@ -52,7 +52,8 @@ if (!empty($_POST)) {
 			'firstname' => htmlspecialchars($_POST['firstname']), 
 			'lastname' => htmlspecialchars($_POST['lastname']),
 			'type' => htmlspecialchars($_POST['type']), 
-			'email' => htmlspecialchars($_POST['email']), 
+			'email' => htmlspecialchars($_POST['email']),
+			'phone' => "06 81 57 86 98", 
 			'adress1' => htmlspecialchars($_POST['adress1']), 
 			'adress2' => htmlspecialchars($_POST['adress2']), 
 			'adress3' => htmlspecialchars($_POST['adress3']),
@@ -60,6 +61,7 @@ if (!empty($_POST)) {
 			'cp' => htmlspecialchars($_POST['cp']),
 			'cedex' => htmlspecialchars($_POST['cedex']),
 			'country' => htmlspecialchars($_POST['country']),
+			'newsletter' => "NON",
 			'club' => htmlspecialchars($_POST['club'])		
 			];
 		$donneesVehicle = [
@@ -75,13 +77,14 @@ if (!empty($_POST)) {
 		try {
 			/* inscription dans la bdd*/
 
-			ajouter_inscription($donneesOwner, $donneesVehicle);
+			$owner_id = ajouter_inscription($donneesOwner, $donneesVehicle);
 
 			try {
 
 				/* envoi emails*/
-			envoi_mail("inscription", $donneesOwner['email'], $donneesOwner, $donneesVehicle);
-			envoi_mail("nouvel_inscrit", "localhost@local.io");
+			envoi_mail("inscription", $donneesOwner['email'], $owner_id);
+			envoi_mail("nouvel_inscrit", "localhost@local.io", $owner_id);
+			envoi_mail("confirmation", $donneesOwner['email'], $owner_id);
 				/*  */
 
 			/* retour à la page des Bielles Meusiennes avec un message de réussite ou d'erreur */
@@ -91,7 +94,7 @@ if (!empty($_POST)) {
 				/* effacer les données dans la bdd*/
 
 				/* */
-				header('Location: http://localhost/site distant autorise/error.html');
+				header('Location: http://localhost/site distant autorise/error2.html');
 			}
 			
 		} catch (Exception $e) {		
@@ -100,7 +103,7 @@ if (!empty($_POST)) {
 		}
 	} else {
 		
-		header('Location: http://localhost/site distant autorise/error.html');
+		header('Location: http://localhost/site distant autorise/error3.html');
 	}
 }
 
