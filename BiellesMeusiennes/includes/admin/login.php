@@ -18,7 +18,7 @@ if (!isset($_POST['username'])) //On est dans la page de formulaire
 
 	if (isset($_GET['message'])) {
 		if ($_GET['message'] == "errorlogin") {
-			echo '<div class="alert alert-danger"><p>Une erreur s\'est produite pendant votre identification.<br /> Le mot de passe ou l\'identifiant entrÃ© n\'est pas correct.</p></div>';
+			echo '<div class="alert alert-danger"><p>Une erreur s\'est produite pendant votre identification.<br /> Le mot de passe ou l\'identifiant entré n\'est pas correct.</p></div>';
 		}
 		else if ($_GET['message'] =="errorchampmanquant") {
 			echo '<div class="alert alert-danger"><p>une erreur s\'est produite pendant votre identification. Vous devez remplir tous les champs</p></div>';
@@ -47,6 +47,7 @@ else
 	//On inclue les 2 pages restantes
 	include('../admin/functions.php');
 	include('../admin/constants.php');
+	include('../includes/common/verif_security.php'); 
 
     $message='';
     if (empty($_POST['username']) || empty($_POST['password']) ) //Oublie d'un champ
@@ -65,7 +66,8 @@ else
 	{
 	    $_SESSION['username'] = $data['username'];
 	    $_SESSION['id'] = $data['id'];
-	    header('Location: http://localhost/BiellesMeusiennes-1/BiellesMeusiennes/includes/admin/dashboard.php');  
+	    generer_token();
+	    header('Location: http://localhost/BiellesMeusiennes-1/BiellesMeusiennes/admin/liste.php');
 	}
 	else // Acces pas OK !
 	{

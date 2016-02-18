@@ -1,6 +1,7 @@
 <?php
 require "../vendor/autoload.php";
 use Core\Configure\Config;
+$inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->execute();
 
 $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->orderBy(['valid' =>'ASC'])->execute();
 ?>

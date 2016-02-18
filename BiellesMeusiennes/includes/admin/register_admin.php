@@ -18,9 +18,7 @@ include('../common/connexion.php');
 
 <?php
 
-
 include('../common/header.php'); //contient le header.
-
 
 //Attribution des variables de session
 
@@ -31,7 +29,6 @@ $username=(isset($_SESSION['username']))?$_SESSION['username']:'';
 include("../admin/functions.php");
 include("../admin/constants.php");
 ?>
-
 
 <?php
 if (empty($_POST['username'])) // Si on la variable est vide, on peut considérer qu'on est sur la page de formulaire
@@ -130,29 +127,27 @@ else //On est dans le cas traitement
 <?php
    if ($i==0)
    {
-	    echo '<div class="form-register-ok">';
-		echo '<div class="panel panel-default">';
-		echo'<h3>Enregistrement terminée</h3>';
-		echo '<div class="container-fluid">';
-		echo'<div class="alert alert-success">';
-		echo'<p> '.stripslashes(htmlspecialchars($_POST['username'])).' vous êtes enregistrer</p>';
-		echo'</div>';
-		echo '<p>Cliquez <a href="../admin/index.php">ici</a> pour revenir à la page d accueil</p>';
-		echo'</div></div></div>';
-	
+        echo '<div class="form-register-ok">';
+        echo '<div class="panel panel-default">';
+        echo'<h3>Enregistrement terminée</h3>';
+        echo '<div class="container-fluid">';
+        echo'<div class="alert alert-success">';
+        echo'<p> '.stripslashes(htmlspecialchars($_POST['username'])).' vous êtes enregistré</p>';
+        echo'</div>';
+        echo '<p>Cliquez <a href="../../admin/index.php">ici</a> pour revenir à la page d accueil</p>';
+        echo'</div></div></div>';
+    
         //La ligne suivante sera commentée plus bas
-	
+    
    
         $query=$bdd->prepare('INSERT INTO users (username, password, email)
         VALUES (:username, :password, :email)');
-	$query->bindValue(':username', $username, PDO::PARAM_STR);
-	$query->bindValue(':password', $password, PDO::PARAM_INT);
-	$query->bindValue(':email', $email, PDO::PARAM_STR);
-
-	
+    $query->bindValue(':username', $username, PDO::PARAM_STR);
+    $query->bindValue(':password', $password, PDO::PARAM_INT);
+    $query->bindValue(':email', $email, PDO::PARAM_STR);
+    
         $query->execute();
-
-	//Et on définit les variables de sessions
+    //Et on définit les variables de sessions
         $_SESSION['username'] = $username;
         $_SESSION['id'] = $bdd->lastInsertId(); ;
       
@@ -160,12 +155,12 @@ else //On est dans le cas traitement
     }
     else
     {
-	 
-		echo '<div class="form-register-error">';
-		echo '<div class="panel panel-default">';
-		echo'<h3>Enregistrement interrompue</h3>';
-		echo '<div class="container-fluid">';
-		echo'<div class="alert alert-danger">';
+     
+        echo '<div class="form-register-error">';
+        echo '<div class="panel panel-default">';
+        echo'<h3>Enregistrement interrompue</h3>';
+        echo '<div class="container-fluid">';
+        echo'<div class="alert alert-danger">';
         echo'<p>Une ou plusieurs erreurs se sont produites pendant l\' incription</p>';
         echo'<p><b>'.$i.' erreur(s)</b></p>';
         echo'<p>'.$username_erreur1.'</p>';
@@ -173,11 +168,11 @@ else //On est dans le cas traitement
         echo'<p>'.$password_erreur.'</p>';
         echo'<p>'.$email_erreur1.'</p>';
         echo'<p>'.$email_erreur2.'</p>';
-		echo'</div>';
+        echo'</div>';
  
        
         echo'<p>Cliquez <a href="./register_admin.php">ici</a> pour recommencer</p>';
-		echo'</div></div></div>';
+        echo'</div></div></div>';
     }
 }
 ?>

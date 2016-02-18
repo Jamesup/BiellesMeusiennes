@@ -26,24 +26,24 @@ if (!empty($_POST)) {
 
 
 
-	if (isset($_POST['firstname']) 
-		&& isset($_POST['lastname'])
-		&& isset($_POST['type'])
-		&& isset($_POST['email'])
-		&& isset($_POST['adress1'])
+	if (isset($_POST['firstname']) && (!empty($_POST['firstname'])) 
+		&& isset($_POST['lastname']) && (!empty($_POST['lastname'])) 
+		&& isset($_POST['type']) && (!empty($_POST['type'])) 
+		&& isset($_POST['email']) && (!empty($_POST['email'])) 
+		&& isset($_POST['adress1']) && (!empty($_POST['adress1']))
 		&& isset($_POST['adress2'])
 		&& isset($_POST['adress3'])
-		&& isset($_POST['city'])
-		&& isset($_POST['cp'])
+		&& isset($_POST['city']) && (!empty($_POST['city'])) 
+		&& isset($_POST['cp']) && (!empty($_POST['cp'])) 
 		&& isset($_POST['cedex'])
-		&& isset($_POST['country'])
+		&& isset($_POST['country']) && (!empty($_POST['country'])) 
 		&& isset($_POST['club'])
-		&& isset($_POST['marque'])
-		&& isset($_POST['model'])
-		&& isset($_POST['serie'])
-		&& isset($_POST['motorisation'])
+		&& isset($_POST['marque']) && (!empty($_POST['marque'])) 
+		&& isset($_POST['model']) && (!empty($_POST['model'])) 
+		&& isset($_POST['serie']) && (!empty($_POST['serie'])) 
+		&& isset($_POST['motorisation']) && (!empty($_POST['motorisation'])) 
 		&& isset($_POST['model_info'])
-		&& isset($_POST['date_circu'])
+		&& isset($_POST['date_circu']) && (!empty($_POST['date_circu'])) 
 		&& isset($_POST['imat'])
 		&& isset($_POST['infos'])
 		) {
@@ -52,7 +52,8 @@ if (!empty($_POST)) {
 			'firstname' => htmlspecialchars($_POST['firstname']), 
 			'lastname' => htmlspecialchars($_POST['lastname']),
 			'type' => htmlspecialchars($_POST['type']), 
-			'email' => htmlspecialchars($_POST['email']), 
+			'email' => htmlspecialchars($_POST['email']),
+			'phone' => "06 81 57 86 98", 
 			'adress1' => htmlspecialchars($_POST['adress1']), 
 			'adress2' => htmlspecialchars($_POST['adress2']), 
 			'adress3' => htmlspecialchars($_POST['adress3']),
@@ -60,6 +61,7 @@ if (!empty($_POST)) {
 			'cp' => htmlspecialchars($_POST['cp']),
 			'cedex' => htmlspecialchars($_POST['cedex']),
 			'country' => htmlspecialchars($_POST['country']),
+			'newsletter' => "NON",
 			'club' => htmlspecialchars($_POST['club'])		
 			];
 		$donneesVehicle = [
@@ -75,13 +77,13 @@ if (!empty($_POST)) {
 		try {
 			/* inscription dans la bdd*/
 
-			ajouter_inscription($donneesOwner, $donneesVehicle);
+			$owner_id = ajouter_inscription($donneesOwner, $donneesVehicle);
 
 			try {
 
 				/* envoi emails*/
-			envoi_mail("inscription", $donneesOwner['email'], $donneesOwner, $donneesVehicle);
-			envoi_mail("nouvel_inscrit", "localhost@local.io");
+			envoi_mail("inscription", $donneesOwner['email'], $owner_id);
+			envoi_mail("nouvel_inscrit", "localhost@local.io", $owner_id);			
 				/*  */
 
 			/* retour à la page des Bielles Meusiennes avec un message de réussite ou d'erreur */
@@ -91,7 +93,7 @@ if (!empty($_POST)) {
 				/* effacer les données dans la bdd*/
 
 				/* */
-				header('Location: http://localhost/site distant autorise/error.html');
+				header('Location: http://localhost/site distant autorise/error2.html');
 			}
 			
 		} catch (Exception $e) {		
@@ -100,7 +102,7 @@ if (!empty($_POST)) {
 		}
 	} else {
 		
-		header('Location: http://localhost/site distant autorise/error.html');
+		header('Location: http://localhost/site distant autorise/error3.html');
 	}
 }
 

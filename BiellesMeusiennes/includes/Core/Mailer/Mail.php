@@ -18,6 +18,7 @@ Class Mail {
         $this->mailer->SMTPSecure = $this->config->smtp->SMTPSecure;
         $this->mailer->Port = $this->config->smtp->Port;
         $this->mailer->setFrom($this->config->smtp->From_adress, $this->config->smtp->From_name);
+        $this->mailer->CharSet = 'UTF-8';
     }
 
     public function send($receiver_mail, $receiver_name, $subject, $content_text, $content_html, $pjs = [])

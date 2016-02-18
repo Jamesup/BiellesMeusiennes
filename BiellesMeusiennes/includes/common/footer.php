@@ -3,5 +3,5 @@
 	pied de page
 </footer>
 
-<script></script
+<script></script>
 
