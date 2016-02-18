@@ -9,11 +9,11 @@ $content_html = "<p>Voici du text qui <b> cette fois </b> est formaté</p>";
 $pjs = [
     [
         'path' => 'le/chemin/du/fichier.file',
-        'Name' => 'nom du fichier'
+        'name' => 'nom du fichier'
     ],
     [
         'path' => 'le/chemin/du/fichier2.file',
-        'Name' => 'nom du fichier2'
+        'name' => 'nom du fichier2'
     ]
 ];
 $receiver_mail = 'djyss@live.fr';

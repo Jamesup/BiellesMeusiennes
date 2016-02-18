@@ -22,20 +22,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="exemple_mailing.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="exemple_mailing.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/BiellesMeusiennes/admin/exemple_mailing.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-23.884615">
-              <caret line="23" column="117" selection-start-line="23" selection-start-column="117" selection-end-line="23" selection-end-column="117" />
+            <state vertical-scroll-proportion="0.30821916">
+              <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Mail.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Mail.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/BiellesMeusiennes/includes/Core/Mailer/Mail.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.44520548">
+            <state vertical-scroll-proportion="-4.3846154">
               <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
               <folding>
                 <element signature="e#30#56#0#PHP" expanded="true" />
@@ -107,8 +107,8 @@
         <option value="$PROJECT_DIR$/BiellesMeusiennes/includes/common/mailing.php" />
         <option value="$PROJECT_DIR$/BiellesMeusiennes/includes/admin/register_admin.php" />
         <option value="$PROJECT_DIR$/BiellesMeusiennes/admin/test.php" />
-        <option value="$PROJECT_DIR$/BiellesMeusiennes/admin/exemple_mailing.php" />
         <option value="$PROJECT_DIR$/BiellesMeusiennes/includes/Core/Mailer/Mail.php" />
+        <option value="$PROJECT_DIR$/BiellesMeusiennes/admin/exemple_mailing.php" />
       </list>
     </option>
   </component>
@@ -630,21 +630,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BiellesMeusiennes/admin/exemple_mailing.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-23.884615">
-          <caret line="23" column="117" selection-start-line="23" selection-start-column="117" selection-end-line="23" selection-end-column="117" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/BiellesMeusiennes/includes/Core/Mailer/Mail.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44520548">
+        <state vertical-scroll-proportion="-4.3846154">
           <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
           <folding>
             <element signature="e#30#56#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BiellesMeusiennes/admin/exemple_mailing.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.30821916">
+          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>
