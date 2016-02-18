@@ -17,12 +17,12 @@ try {
 }
 
 /* vérification du captcha*/
-/*$captcha = new Recaptcha ('6LdLehgTAAAAAFmYf4DDe7hadxGYRfDiuw2UMgCr', '6LdLehgTAAAAAG05QDDI0YknJWRASpPYoly9y4Cp');
-*/if (!empty($_POST)) {
-	/*if ($captcha->isValid($_POST['g-recaptcha-response']) == false) {
+$captcha = new Recaptcha ('6LdLehgTAAAAAFmYf4DDe7hadxGYRfDiuw2UMgCr', '6LdLehgTAAAAAG05QDDI0YknJWRASpPYoly9y4Cp');
+if (!empty($_POST)) {
+	if ($captcha->isValid($_POST['g-recaptcha-response']) == false) {
 		header('Location: http://localhost/site distant autorise/hack.html');
 		die();
-	}*/
+	}
 
 
 
