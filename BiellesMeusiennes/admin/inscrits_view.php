@@ -65,7 +65,6 @@ body
                   <tr>
                       <th scope="row">NOM</th>
                       <td><?= $inscription->lastname ;?></td>
-
                   </tr>
                   <tr>
                       <th scope="row">Prénom</th>
@@ -183,11 +182,8 @@ body
         </div>
       </div>
     </div>
-    <div class="row">
-          <div class="col-xs-4">
-
-          </div>
-          <div class="col-xs-4">
+    <div class="row">          
+          <div class="col-xs-offset-4 col-xs-4">
             <button type="button" class="btn btn-info btn-lg">Editer</button>
 
 
@@ -198,10 +194,7 @@ body
 
 
             <button type="button" class="btn btn-danger btn-lg">Effacer</button>
-          </div>
-          <div class="col-xs-4">
-
-          </div>
+          </div>          
     </div>
 
   </div>

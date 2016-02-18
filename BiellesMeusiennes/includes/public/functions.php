@@ -11,8 +11,8 @@ function ajouter_inscription($donneesOwners, $donneesVehicles) {
 
 	/* On crée le nouveau propriétaire dans la bdd*/
 	$requeteOwners = $bdd->prepare(
-		'INSERT INTO owners (firstname, lastname, type, email, adress1, adress2, adress3, city, cp, cedex, country, club, is_valid, created) 
-		VALUES (:firstname, :lastname, :type, :email, :adress1, :adress2, :adress3, :city, :cp, :cedex, :country, :club, 0, NOW())');
+		'INSERT INTO owners (firstname, lastname, type, email, phone, adress1, adress2, adress3, city, cp, cedex, country, club, is_valid, newsletter, created) 
+		VALUES (:firstname, :lastname, :type, :email, :phone, :adress1, :adress2, :adress3, :city, :cp, :cedex, :country, :club, 0, , :newsletter, NOW())');
 	try {
 		$requeteOwners->execute($donneesOwners);
 	}
@@ -24,8 +24,8 @@ function ajouter_inscription($donneesOwners, $donneesVehicles) {
 	$donneesVehicles['owner_id'] = $bdd->lastInsertId();
 
 	$requeteVehicles = $bdd->prepare(
-		'INSERT INTO vehicles (owner_id, marque, model, serie, motorisation, model_info, date_circu, imat, infos, created)
-		VALUES (:owner_id, :marque, :model, :serie, :motorisation, :model_info, :date_circu, :imat, :infos, NOW())');
+		'INSERT INTO vehicles (owner_id, marque, model, serie, motorisation, model_info, date_circu, imat, infos)
+		VALUES (:owner_id, :marque, :model, :serie, :motorisation, :model_info, :date_circu, :imat, :infos)');
 
 	try {
 		$requeteVehicles->execute($donneesVehicles);

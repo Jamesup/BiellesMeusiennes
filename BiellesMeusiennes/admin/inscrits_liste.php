@@ -2,27 +2,32 @@
 require "../vendor/autoload.php";
 use Core\Configure\Config;
 $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->execute();
+
+  if(!isset($_SESSION)) { 
+    session_start();
+  }
+  if (isset($_SESSION['id']) AND isset($_SESSION['username'])) {
+    include_once('../includes/common/verif_security.php');
+    $token = generer_token();
+  }  
+
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Informations des utilisateurs</title>
+<head>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+<?php
+include('../includes/common/head.php'); //contient le head.
+?>
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+  <title>Informations des utilisateurs</title>
+</head>
+<header>
+<?php 
+include('../includes/common/header.php'); //contient le header.
+?>
+</header>
 
 <body>
 
@@ -49,7 +54,6 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
     font-size: 1.7em;
   }
 
-
   </style>
 
   <!--FIN du style CSS perso-->
@@ -62,7 +66,7 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
         <div class="table-responsive">
           <table id="moTable" summary="Exemple d'affichage du tableau de visualisation des utilisateurs" class="table table-hover table-striped table-responsive table-condensed">
             <thead>
-              <tr>
+              <tr>                
                 <th>NOM</th>
                 <th>Prénom</th>
                 <th>Email</th>
@@ -74,7 +78,7 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
             </thead>
             <tbody>
               <?php foreach( $inscriptions as $inscription ): ?>
-              <tr>
+              <tr>                
                 <td><?= $inscription->lastname ;?></td>
                 <td><?= $inscription->firstname ;?></td>
                 <td><?= $inscription->email ;?></td>
@@ -83,7 +87,7 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
                 <td><?= $inscription->date_circu ;?></td>
                 <td class="row">
                   <div class="col-xs-6">
-                    <a href="inscrits_view.php?user=<?=$inscription->owner_id;?>" class="btn btn-default btn-md">Voir</a>
+                    <a href="inscrits_view.php?user=<?php echo $inscription->owner_id;?>" class="btn btn-default btn-md">Voir</a>
                   </div>
                   <div class="col-xs-6">
                     <button type="button" class="btn btn-success btn-md">Valider</button><button type="button" class="btn btn-warning btn-md">Refuser</button>

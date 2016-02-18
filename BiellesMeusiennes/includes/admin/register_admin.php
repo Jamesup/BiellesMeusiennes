@@ -135,7 +135,7 @@ else //On est dans le cas traitement
         echo'<h3>Enregistrement terminée</h3>';
         echo '<div class="container-fluid">';
         echo'<div class="alert alert-success">';
-        echo'<p> '.stripslashes(htmlspecialchars($_POST['username'])).' vous êtes enregistrer</p>';
+        echo'<p> '.stripslashes(htmlspecialchars($_POST['username'])).' vous êtes enregistré</p>';
         echo'</div>';
         echo '<p>Cliquez <a href="../admin/index.php">ici</a> pour revenir à la page d accueil</p>';
         echo'</div></div></div>';
