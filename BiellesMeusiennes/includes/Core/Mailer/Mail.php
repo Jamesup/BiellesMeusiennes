@@ -20,12 +20,14 @@ Class Mail {
         $this->mailer->setFrom($this->config->smtp->From_adress, $this->config->smtp->From_name);
     }
 
-    public function send($receiver_mail, $receiver_name, $subject, $content_text, $content_html, $pj_file = false, $pj_name = false)
+    public function send($receiver_mail, $receiver_name, $subject, $content_text, $content_html, $pjs = [])
     {
         $content_text = $this->mailer->normalizeBreaks($content_text, "\r\n");
         $this->mailer->addAddress($receiver_mail, $receiver_name);
-        if ($pj_file) {
-            $this->mailer->addAttachment($pj_file, $pj_name);
+        if (!empty($pjs)) {
+            foreach ( $pjs as $pj ) {
+                $this->mailer->addAttachment($pj['path'], $pj['name']);
+            }
         }
         $this->mailer->isHTML(true);
         $this->mailer->Subject = $subject;
