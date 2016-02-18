@@ -85,6 +85,7 @@ Class Database {
         try {
             $req->execute($attributes);
         } catch (\PDOException $e) {
+
             return false;
         }
         switch (substr($statement, 0 , 6)) {
