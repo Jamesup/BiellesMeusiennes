@@ -83,8 +83,9 @@ Class DataExporter {
     public function sendPdfByMail($datas)
     {
         $this->__formatPdf($datas);
-        $content_PDF = $this->Pdf->Output($_SERVER['DOCUMENT_ROOT'].'BiellesMeusiennes-1/BiellesMeusiennes/includes/App/Views/pdf/'.$this->filename .'.'. $this->file_type, 'F');
-        return $_SERVER['DOCUMENT_ROOT'] .$this->filename.'.'. $this->file_type;
+        $file_path = $_SERVER['DOCUMENT_ROOT'].'BiellesMeusiennes-1/BiellesMeusiennes/includes/App/Views/pdf/'.$this->filename .'.'. $this->file_type
+        $content_PDF = $this->Pdf->Output($file_path, 'F');
+        return $file_path;
     }
 
     /**

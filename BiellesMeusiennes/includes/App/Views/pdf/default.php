@@ -21,7 +21,6 @@
                 <th>cp</th>
                 <th>cedex</th>
                 <th>country</th>
-                <th>created</th>
                 <th>newsletter</th>
                 <th>club</th>
             </tr>
