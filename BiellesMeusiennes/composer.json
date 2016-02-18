@@ -8,7 +8,8 @@
     ],
     "require": {
         "spipu/html2pdf": "^4.5",
-        "csanquer/colibri-csv": "1.0.*"
+        "csanquer/colibri-csv": "1.0.*",
+        "phpmailer/phpmailer": "^5.2"
     },
     "autoload": {
         "psr-4": {
