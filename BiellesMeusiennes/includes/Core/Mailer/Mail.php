@@ -24,7 +24,7 @@ Class Mail {
     {
         $content_text = $this->mailer->normalizeBreaks($content_text, "\r\n");
         $this->mailer->addAddress($receiver_mail, $receiver_name);
-        if (!is_empty($pjs)) {
+        if (!empty($pjs)) {
             foreach ( $pjs as $pj ) {
                 $this->mailer->addAttachment($pj['path'], $pj['name']);
             }
