@@ -4,5 +4,15 @@
         "name": "bielles",
         "user": "root",
         "pass": ""
+    },
+    "smtp": {
+        "Host": "localhost",
+        "Username": "username",
+        "Password": "password",
+        "SMTPSecure": false,
+        "Port" : 1025,
+        "From_adress" : "adminEnvoiBiellesMeusiennes@localhost.io",
+        "From_name" : "Bielles Meusiennes",
+        "SMTPAuth": false
     }
 }

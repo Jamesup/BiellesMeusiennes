@@ -14,7 +14,7 @@ Class DataExporter {
     /**
      * @var
      */
-    private $filename;
+    public $filename;
     /**
      * @var
      */
@@ -68,16 +68,36 @@ Class DataExporter {
      */
     public function getPdf($datas)
     {
+        $this->__formatPdf($datas);
+        try {
+            $this->Pdf->Output( '/'.$this->filename .'.'. $this->file_type, $this->output);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
 
+    /**
+     * @param $datas
+     * @return string
+     */
+    public function sendPdfByMail($datas)
+    {
+        $this->__formatPdf($datas);
+        $content_PDF = $this->Pdf->Output($_SERVER['DOCUMENT_ROOT'].'BiellesMeusiennes-1/BiellesMeusiennes/includes/App/Views/pdf/'.$this->filename .'.'. $this->file_type, 'F');
+        return $_SERVER['DOCUMENT_ROOT'] .$this->filename.'.'. $this->file_type;
+    }
+
+    /**
+     * @param $datas
+     * @return $this
+     */
+    private function __formatPdf($datas)
+    {
         $this->Pdf = new HTML2PDF($this->orientation, $this->format, $this->lang );
         $this->__getPdfView($datas);
         $this->Pdf->pdf->SetDisplayMode('fullpage');
         $this->Pdf->WriteHTML($this->html);
-        try {
-            $this->Pdf->Output( $this->filename .'.'. $this->file_type, $this->output);
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        return $this;
     }
 
     /**
@@ -144,6 +164,18 @@ Class DataExporter {
         } else if ($this->file_type === "csv") {
             return $this->getCsv($datas);
         }
+    }
+
+    /**
+     * @param $datas
+     * @return bool|string|void
+     */
+    public function save( $datas )
+    {
+        if ( $this->file_type === "pdf") {
+            return $this->sendPdfByMail($datas);
+        }
+        return false;
     }
 
     /**
