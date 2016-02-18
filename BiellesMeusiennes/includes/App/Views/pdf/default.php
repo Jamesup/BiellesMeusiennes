@@ -19,14 +19,9 @@
                 <th>adress3</th>
                 <th>city</th>
                 <th>cp</th>
-                <th>adress3</th>
-                <th>adress3</th>
                 <th>cedex</th>
                 <th>country</th>
                 <th>created</th>
-                <th>modified</th>
-                <th>token</th>
-                <th>password</th>
                 <th>newsletter</th>
                 <th>club</th>
             </tr>
@@ -47,10 +42,6 @@
                 <td><?= $data->cp;?></td>
                 <td><?= $data->cedex;?></td>
                 <td><?= $data->country;?></td>
-                <td><?= $data->created;?></td>
-                <td><?= $data->modified;?></td>
-                <td><?= $data->token;?></td>
-                <td><?= $data->password;?></td>
                 <td><?= $data->newsletter;?></td>
                 <td><?= $data->club;?></td>
             </tr>
