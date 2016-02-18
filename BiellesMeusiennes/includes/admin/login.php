@@ -18,10 +18,10 @@ if (!isset($_POST['username'])) //On est dans la page de formulaire
 
 	if (isset($_GET['message'])) {
 		if ($_GET['message'] == "errorlogin") {
-			echo '<div><p>Une erreur s\'est produite pendant votre identification.<br /> Le mot de passe ou l\'identifiant entré n\'est pas correct.</p></div>';
+			echo '<div class="alert alert-danger"><p>Une erreur s\'est produite pendant votre identification.<br /> Le mot de passe ou l\'identifiant entré n\'est pas correct.</p></div>';
 		}
 		else if ($_GET['message'] =="errorchampmanquant") {
-			echo '<div><p>une erreur s\'est produite pendant votre identification. Vous devez remplir tous les champs</p></div>';
+			echo '<div class="alert alert-danger"><p>une erreur s\'est produite pendant votre identification. Vous devez remplir tous les champs</p></div>';
 		}
 	}
 
@@ -77,3 +77,4 @@ else
 
 }
 ?>
+
