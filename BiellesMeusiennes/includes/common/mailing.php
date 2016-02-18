@@ -53,7 +53,7 @@ function envoi_mail ($action, $mail , $owner_id) {
 			break;
 
 		/* autres cas ... */
-		case "confirmation" :
+		case "validation" :
 
 			$participant = Config::QueryBuilder()->findOne("Owners")->contain('Vehicles')->where(['owners.id' => $owner_id])->execute();
 
