@@ -24,13 +24,12 @@ Class Config {
      */
     private static $queryBuilder;
 
-
     /**
      * @return mixed
      */
     public static function getConfig() {
         if ( self::$configuration === null ) {
-            self::$configuration = json_decode(file_get_contents("../includes/Config/config.json"));
+            self::$configuration = json_decode(file_get_contents(__DIR__ ."/config.json"));
         }
         return self::$configuration;
     }
