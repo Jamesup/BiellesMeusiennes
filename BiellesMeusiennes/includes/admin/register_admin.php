@@ -18,9 +18,7 @@ include('../common/connexion.php');
 
 <?php
 
-
 include('../common/header.php'); //contient le header.
-
 
 //Attribution des variables de session
 
@@ -31,7 +29,6 @@ $username=(isset($_SESSION['username']))?$_SESSION['username']:'';
 include("../admin/functions.php");
 include("../admin/constants.php");
 ?>
-
 
 <?php
 if (empty($_POST['username'])) // Si on la variable est vide, on peut considérer qu'on est sur la page de formulaire
@@ -137,7 +134,7 @@ else //On est dans le cas traitement
         echo'<div class="alert alert-success">';
         echo'<p> '.stripslashes(htmlspecialchars($_POST['username'])).' vous êtes enregistré</p>';
         echo'</div>';
-        echo '<p>Cliquez <a href="../admin/index.php">ici</a> pour revenir à la page d accueil</p>';
+        echo '<p>Cliquez <a href="../../admin/index.php">ici</a> pour revenir à la page d accueil</p>';
         echo'</div></div></div>';
     
         //La ligne suivante sera commentée plus bas

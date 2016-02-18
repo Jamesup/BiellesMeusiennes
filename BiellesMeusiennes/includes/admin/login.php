@@ -47,6 +47,7 @@ else
 	//On inclue les 2 pages restantes
 	include('../admin/functions.php');
 	include('../admin/constants.php');
+	include('../includes/common/verif_security.php'); 
 
     $message='';
     if (empty($_POST['username']) || empty($_POST['password']) ) //Oublie d'un champ
@@ -65,7 +66,8 @@ else
 	{
 	    $_SESSION['username'] = $data['username'];
 	    $_SESSION['id'] = $data['id'];
-	    header('Location: http://localhost/BiellesMeusiennes-1/BiellesMeusiennes/includes/admin/dashboard.php');  
+	    generer_token();
+	    header('Location: http://localhost/BiellesMeusiennes-1/BiellesMeusiennes/admin/liste.php');
 	}
 	else // Acces pas OK !
 	{

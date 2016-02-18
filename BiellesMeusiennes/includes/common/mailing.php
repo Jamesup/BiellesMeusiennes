@@ -2,7 +2,7 @@
 
 include_once('./includes/common/functions.php');
 
-function envoi_mail ($contenu, $mail , $donneesOwner, $donneesVehicle) {
+function envoi_mail ($action, $mail , $donneesOwner, $donneesVehicle) {
 
 	if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)) // On filtre les serveurs qui rencontrent des bogues.
 	{
@@ -23,7 +23,7 @@ function envoi_mail ($contenu, $mail , $donneesOwner, $donneesVehicle) {
 	$header .= "MIME-Version: 1.0".$passage_ligne;
 	//==========
 
-	switch ($contenu) {
+	switch ($action) {
 		case "inscription" :		
 			$header .= "Content-Type: multipart/alternative;".$passage_ligne." boundary=\"$boundary\"".$passage_ligne;	
 
@@ -32,14 +32,15 @@ function envoi_mail ($contenu, $mail , $donneesOwner, $donneesVehicle) {
 			//=========
 			//=====Déclaration des messages au format texte et au format HTML.
 			$message_txt = "Bonjour " .$donneesOwner['firstname']. " ".$donneesOwner['lastname'].",".$passage_ligne."nous avons bien pris en compte votre demande concernant le véhicule suivant :".$passage_ligne."Marque : ".$donneesVehicle['marque'].$passage_ligne."Modèle : ".$donneesVehicle['model'].$passage_ligne."Immatriculation : ".$donneesVehicle['imat'].$passage_ligne."Date de mise en circulation : ".$donneesVehicle['date_circu'].$passage_ligne."Vous recevrez dans les prochains jours un email confirmant ou refusant votre inscription.".$passage_ligne."Cordialement.".$passage_ligne."Pour plus d'infos : www.biellesmeusiennes.com".$passage_ligne."L'équipe des Bielles Meusiennes.";
-			$message_html = file_get_contents('././includes/App/Views/mails/inscription.html');
+			$message_html = file_get_contents('././includes/App/Views/mails/base_mail.html');
 			$message_html = mail_all_update($message_html, [
 				["%firstname%", $donneesOwner['firstname']],
 				["%lastname%", $donneesOwner['lastname']],
 				["%marque%", $donneesVehicle['marque']],
 				["%model%", $donneesVehicle['model']],
 				["%immat%", $donneesVehicle['imat']],
-				["%date_circu%", $donneesVehicle['date_circu']]
+				["%date_circu%", $donneesVehicle['date_circu']],
+				["%message%"], "Bonjour " .$donneesOwner['firstname']. " ".$donneesOwner['lastname'].",\r\n nous avons bien pris en compte votre demande concernant le véhicule suivant : \r\n Marque : ".$donneesVehicle['marque']."\r\n Modèle : ".$donneesVehicle['model']."\r\n Immatriculation : ".$donneesVehicle['imat']."\r\n Date de mise en circulation : ".$donneesVehicle['date_circu']."\r\n Vous recevrez dans les prochains jours un email confirmant ou refusant votre inscription.\r\nCordialement.\r\nPour plus d'infos : www.biellesmeusiennes.com.\r\nL'équipe des Bielles Meusiennes.";]
 				]
 				);
 			//==========
