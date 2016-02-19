@@ -18,6 +18,6 @@ connecté !
 </form>
 <?php 
 } else {	
-	header('Location: http://localhost/BiellesMeusiennes-1/BiellesMeusiennes/admin/index.php?message=errorlogin');
+	header('Location: http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/index.php?message=errorlogin');
 }
 ?>

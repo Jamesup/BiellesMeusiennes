@@ -12,7 +12,7 @@ include_once('./includes/public/functions.php');
 try {
 	verif_origin_user();
 } catch (Exception $e) {
-	header('Location: http://localhost/site distant autorise/hack.html');
+	header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error');
 	die();
 }
 
@@ -20,7 +20,7 @@ try {
 $captcha = new Recaptcha ('6LdidxgTAAAAAHGefCS0_l2eyEeXVWh4lRFVHyzj', '6LdidxgTAAAAAA-7SGtTTaso_qETEZ6-fg_XUYOz');
 if (!empty($_POST)) {
 	if ($captcha->isValid($_POST['g-recaptcha-response']) == false) {
-		header('Location: http://localhost/site distant autorise/hack.html');
+		header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error');
 		die();
 	}
 
@@ -89,21 +89,21 @@ if (!empty($_POST)) {
 
 			/* retour à la page des Bielles Meusiennes avec un message de réussite ou d'erreur */
 			
-			header('Location: http://localhost/site distant autorise/success.html');
+			header('Location: http://hiddenj.jimdo.com/design-formulaire-1/success');
 			} catch (Exception $e) {
 				/* effacer les données dans la bdd*/
 
 				/* */
-				header('Location: http://localhost/site distant autorise/error2.html');
+				header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error');
 			}
 			
 		} catch (Exception $e) {		
 			
-			header('Location: http://localhost/site distant autorise/error.html');
+			header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error');
 		}
 	} else {
 		
-		header('Location: http://localhost/site distant autorise/error3.html');
+		header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error');
 	}
 }
 
