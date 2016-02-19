@@ -52,7 +52,7 @@ else
     $message='';
     if (empty($_POST['username']) || empty($_POST['password']) ) //Oublie d'un champ
     {
-        header('Location: http://localhost/BiellesMeusiennes-1/BiellesMeusiennes/admin/index.php?message=errorchampmanquant');
+        header('Location: http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/index.php?message=errorchampmanquant');
     }
     else //On check le mot de passe
     {
@@ -67,11 +67,11 @@ else
 	    $_SESSION['username'] = $data['username'];
 	    $_SESSION['id'] = $data['id'];
 	    generer_token();
-	    header('Location: http://localhost/BiellesMeusiennes-1/BiellesMeusiennes/admin/liste.php');
+	    header('Location: http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/liste.php');
 	}
 	else // Acces pas OK !
 	{
-	    header('Location: http://localhost/BiellesMeusiennes-1/BiellesMeusiennes/admin/index.php?message=errorlogin');
+	    header('Location: http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/index.php?message=errorlogin');
 	}
     $query->CloseCursor();
     }
