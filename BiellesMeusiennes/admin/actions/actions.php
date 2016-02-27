@@ -1,7 +1,17 @@
 <?php
+include('../includes/common/verif_security.php'); 
+
+try {
+    verif_origin_user();
+} catch (Exception $e) {
+   header('Location: http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/index.php?message=errortoken&token=' . $_POST['token'] );
+    die();
+}
+
 require "../../vendor/autoload.php";
 use Core\Configure\Config;
 use Core\Export\DataExporter;
+include_once('./includes/common/mailing.php');
 
 
 if ($_POST && isset($_POST['action'])) {
@@ -23,12 +33,11 @@ function validate ($type, $id) {
     switch ($type) {
         case "valider":
             $message = ["message" =>  "Inscription valide"];
-            $params = ['valid' => 1];
-
+            $params = ['valid' => 1, 'action' => "validation"];          
             break;
         case "refuser":
             $message = ["message" =>  "Inscription refuse"];
-            $params = ['valid' => 2];
+            $params = ['valid' => 2, 'action' => "refus"];            
             break;
         case "supprimer":
             $message = ["message" =>  "Inscription supprimee"];
@@ -36,6 +45,7 @@ function validate ($type, $id) {
     }
     if ( $params ) {
         $upd = Config::QueryBuilder()->update('Owners', ['id' => $id], $params)->execute();
+        envoi_mail($params['action'], "localhost.io", $id);
     }else {
         $upd = Config::QueryBuilder()->delete('Owners')->where(['id' => $id])->execute();
         $upd = Config::QueryBuilder()->delete('Vehicles')->where(['owner_id' => $id])->execute();

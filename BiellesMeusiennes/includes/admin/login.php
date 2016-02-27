@@ -1,12 +1,11 @@
 <?php
 
- 
+session_start();
 
 //Attribution des variables de session
 
 $id=(isset($_SESSION['id']))?(int) $_SESSION['id']:0;
 $username=(isset($_SESSION['username']))?$_SESSION['username']:'';
-
 
 
 if (!isset($_POST['username'])) //On est dans la page de formulaire
@@ -22,6 +21,11 @@ if (!isset($_POST['username'])) //On est dans la page de formulaire
 		}
 		else if ($_GET['message'] =="errorchampmanquant") {
 			echo '<div class="alert alert-danger"><p>une erreur s\'est produite pendant votre identification. Vous devez remplir tous les champs</p></div>';
+		}
+		else if ($_GET['message'] =="errortoken") {
+			echo '<div class="alert alert-danger"><p>Faille csrf</p></div>';
+			echo 'on veut ce token : ' . $_SESSION['_token'];
+			echo 'on a envoyé ce token : ' . $_GET['token'];
 		}
 	}
 
@@ -47,7 +51,7 @@ else
 	//On inclue les 2 pages restantes
 	include('../admin/functions.php');
 	include('../admin/constants.php');
-	include('../includes/common/verif_security.php'); 
+	include('../../includes/common/verif_security.php'); 
 
     $message='';
     if (empty($_POST['username']) || empty($_POST['password']) ) //Oublie d'un champ
@@ -66,8 +70,8 @@ else
 	{
 	    $_SESSION['username'] = $data['username'];
 	    $_SESSION['id'] = $data['id'];
-	    generer_token();
-	    header('Location: http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/liste.php');
+	    $token = generer_token();
+	    header('Location: http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/liste.php?token='.$token);
 	}
 	else // Acces pas OK !
 	{

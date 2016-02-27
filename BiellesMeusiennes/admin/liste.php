@@ -1,9 +1,20 @@
 <?php
+include('../includes/common/verif_security.php'); 
+
+try {
+    verif_origin_user();
+} catch (Exception $e) {
+   header('Location: http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/index.php?message=errortoken&token=' . $_GET['token'] );
+    die();
+}
+
 require "../vendor/autoload.php";
 use Core\Configure\Config;
+
+
 $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->execute();
 
-$inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->orderBy(['valid' =>'ASC'])->execute();
+//$inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->orderBy(['valid' =>'ASC'])->execute();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -53,6 +64,8 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
 <!--FIN du style CSS perso-->
 
 <h1>Informations générales des utilisateurs</h1>
+
+<input type="hidden" value="<?php echo $_POST['token']?>">
 
 <div class="container-fluid">
     <div id="alert" style="display:none;">
@@ -111,7 +124,7 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
                             <td><?= ($inscription->newsletter) ? "<span style='color:green;'>Oui</span>" : "<span style='color:red;'>Non</span>"; ?></td>
                             <td><?= $inscription->marque; ?></td>
                             <td><?= $inscription->model; ?></td>
-                            <td><?= $inscription->imat; ?></td>
+                            <td><?= $inscription->immat; ?></td>
                             <td><?= $inscription->date_circu; ?></td>
                             <td><span style="color:<?=$color ?>; width:0.3%;"><?= $text ?></span></td>
                             <td style="display:none;"><span style="visibility: hidden;"><?= $inscription->valid;?></span></td>
