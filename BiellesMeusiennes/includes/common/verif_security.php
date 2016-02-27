@@ -5,7 +5,7 @@ function generer_token() {
 		session_start();
 	}
 	$token = md5 (time()*rand(224, 698));
-	$_SESSION['token']= $token;
+	$_SESSION['_token']= $token;
 	return $token;
 }
 
@@ -15,16 +15,16 @@ function verif_origin_user () {
 		session_start();
 	}
 	if (isset($_SERVER['HTTP_REFERER'])) {
-		/*si l'utilisateur est sur le site admin, il doit avoir une session active qui n'existe qu'après login*/
-		if (preg_match("#^http:\/\/localhost\/BiellesMeusiennes\/BiellesMeusiennes\/#", $_SERVER['HTTP_REFERER'])) {
+		/*si l'utilisateur est sur le site admin, il doit avoir une session active qui n'existe qu'après login, sécurisée par la présence d'un token propre à la session*/
+		if (preg_match("#^http:\/\/localhost\/BiellesMeusiennes\/BiellesMeusiennes\/admin#", $_SERVER['HTTP_REFERER'])) {
 			if (!isset($_GET['token'])) {
 				throw new Exception ('pas de token');
-			}  else if ($_GET['token'] != $_SESSION['token']) {
+			}  else if ($_GET['token'] != $_SESSION['_token']) {
 				throw new Exception ('jeton de sécurité périmé');
 			}
 		}
 		/* sécurisation failles CSRF. on refuse toute connexion qui provient d'un autre site que celui des Bielles Meusiennes public*/
-		else if (!preg_match("#^http:\/\/localhost\/site%20distant%20autorise\/#", $_SERVER['HTTP_REFERER']) && (!preg_match("#^http:\/\/hiddenj.jimdo.com\/design-formulaire-1\/#", $_SERVER['HTTP_REFERER']))) {
+		else if (!preg_match("#^http:\/\/hiddenj.jimdo.com\/design-formulaire-1\/#", $_SERVER['HTTP_REFERER'])) {
 			throw new Exception ('vous venez de ce site non autorisé : '. $_SERVER['HTTP_REFERER']);
 		}		
 	} else {

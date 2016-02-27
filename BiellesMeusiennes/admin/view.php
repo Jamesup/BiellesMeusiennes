@@ -1,4 +1,13 @@
 <?php
+include('../includes/common/verif_security.php'); 
+
+/*try {
+    verif_origin_user();
+} catch (Exception $e) {
+   header('Location: http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/index.php?message=errortoken&token=' . $_GET['token'] );
+    die();
+}*/
+
 require "../vendor/autoload.php";
 use Core\Configure\Config;
 
@@ -226,7 +235,7 @@ if ( $inscription == false) {
                         </tr>
                         <tr>
                             <th scope="row">Immatriculation</th>
-                            <td><?= $inscription->imat; ?></td>
+                            <td><?= $inscription->immat; ?></td>
 
                         </tr>
                         <tr>

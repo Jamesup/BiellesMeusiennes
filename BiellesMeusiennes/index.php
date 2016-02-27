@@ -72,7 +72,7 @@ if (!empty($_POST)) {
 			'motorisation' => htmlspecialchars($_POST['motorisation']),
 			'model_info' => htmlspecialchars($_POST['model_info']),
 			'date_circu' => htmlspecialchars($_POST['date_circu']),
-			'imat' => htmlspecialchars($_POST['immat']),
+			'immat' => htmlspecialchars($_POST['immat']),
 			'infos' => htmlspecialchars($_POST['infos'])
 			];
 		try {

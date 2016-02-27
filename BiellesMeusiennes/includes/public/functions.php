@@ -26,8 +26,8 @@ function ajouter_inscription($donneesOwners, $donneesVehicles) {
 	$owner_id = $donneesVehicles['owner_id'];
 
 	$requeteVehicles = $bdd->prepare(
-		'INSERT INTO vehicles (owner_id, marque, model, serie, motorisation, model_info, date_circu, imat, infos)
-		VALUES (:owner_id, :marque, :model, :serie, :motorisation, :model_info, :date_circu, :imat, :infos)');
+		'INSERT INTO vehicles (owner_id, marque, model, serie, motorisation, model_info, date_circu, immat, infos)
+		VALUES (:owner_id, :marque, :model, :serie, :motorisation, :model_info, :date_circu, :immat, :infos)');
 
 	try {
 		$requeteVehicles->execute($donneesVehicles);
