@@ -3,7 +3,7 @@
         "host": "localhost",
         "name": "bielles",
         "user": "root",
-        "pass": "P1h5X9LounA"
+        "pass": ""
     },
     "smtp": {
         "Host": "localhost",
