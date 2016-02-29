@@ -3,6 +3,7 @@ include('../includes/common/verif_security.php');
 
 try {
     verif_origin_user();
+    $token =  $_GET['token'];
 } catch (Exception $e) {
    header('Location: http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/index.php?message=errortoken&token=' . $_GET['token'] );
     die();
@@ -29,6 +30,7 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/TopNavBarStyles.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -36,10 +38,11 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+</head>
 
 <body>
-
-<!--Style CSS perso-->
+    <!--Style CSS perso-->
 <style type="text/css">
 
     h1 {
@@ -59,9 +62,23 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
     }
 
 
+
+
 </style>
 
 <!--FIN du style CSS perso-->
+
+    
+    <div id='cssmenu' class="sticky">
+        <ul>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/liste.php?token=<?= $_GET['token']; ?>'>Home</a></li>
+           <li><a href=''>Reset BDD</a></li>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/register_admin.php?token=<?= $_GET['token']; ?>'>Creer un compte</a></li>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/logout.php?token=<?= $_GET['token']; ?>'>Deconnexion</a></li>
+        </ul>
+    </div>
+    
+
 
 <h1>Informations générales des utilisateurs</h1>
 
@@ -130,11 +147,11 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
                             <td style="display:none;"><span style="visibility: hidden;"><?= $inscription->valid;?></span></td>
                             <td>
                                 <span class="pull-left">
-                                    <a href="view.php?user=<?= $inscription->owner_id; ?>"
+                                    <a href="view.php?user=<?= $inscription->owner_id; ?>&token=<?= $_GET['token'] ?>"
                                        class="btn btn-default btn-md">Voir</a>
                                     <?php if ($inscription->valid == 0): ?>
                                         <button type="button" class="btn btn-success btn-validate"
-                                                data-id="<?= $inscription->owner_id; ?>">Valider
+                                                data-id="<?= $inscription->owner_id; ?> ">Valider
                                         </button>
                                         <button type="button" class="btn btn-danger btn-refused"
                                                 data-id="<?= $inscription->owner_id; ?>">Refuser
@@ -165,6 +182,8 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+<script src="../assets/js/topNavBarScript.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#moTable').dataTable({
