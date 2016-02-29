@@ -48,7 +48,7 @@ Class QueryBuilder
      */
     private function find($table)
     {
-        $this->statement = "SELECT * FROM " . $table;
+        $this->statement = "SELECT * FROM " . strtolower($table);
         $this->__setTableModel($table);
         return $this;
     }
@@ -87,7 +87,7 @@ Class QueryBuilder
     public function save($table, $datas)
     {
 
-        $this->statement .= 'INSERT INTO ' . $table;
+        $this->statement .= 'INSERT INTO ' . strtolower($table);
         $this->statement .= ' (';
         foreach ($datas as $key => $value) {
             $this->statement .= $key . ', ';
@@ -142,7 +142,7 @@ Class QueryBuilder
      */
     public function update($table, $conditions, $newValues)
     {
-        $this->statement .= "UPDATE ".$table." SET ";
+        $this->statement .= "UPDATE ".strtolower($table)." SET ";
         $lastKey = end($newValues);
         $lastKey = key($newValues);
         foreach ($newValues as $col => $val) {
@@ -181,7 +181,7 @@ Class QueryBuilder
      */
     public function delete($table)
     {
-        $this->statement .= "DELETE FROM ".$table;
+        $this->statement .= "DELETE FROM ".strtolower($table);
         return $this;
     }
 
@@ -191,7 +191,7 @@ Class QueryBuilder
      */
     public function deleteAll($table)
     {
-        $this->statement .= "truncate table ".$table;
+        $this->statement .= "truncate table ".strtolower($table);
         return $this;
     }
 

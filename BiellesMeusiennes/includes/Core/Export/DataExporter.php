@@ -104,9 +104,9 @@ Class DataExporter {
     /**
      * @param $datas
      */
-    public function getCsv($datas)
+    public function getCsv($data)
     {
-        $filePath = $this->filename.'.csv';
+        $filePath = "../".$this->filename.'.csv';
         $writer = new CsvWriter(array(
             'delimiter' => ';',
             'enclosure' => '"',
@@ -118,12 +118,15 @@ Class DataExporter {
             'first_row_header' => false,
             'trim' => false,
         ));
+
         $stream = fopen($filePath, 'wb');
+
         $writer->open($stream);
-        $array = json_decode(json_encode($datas), true);
+        $array = json_decode(json_encode($data), true);
         $writer->writeRows($array);
         $writer->getFileContent();
         $writer->close();
+
         $maxRead    = 1 * 2048 * 2048;
         $fileSize   = filesize($filePath);
         $fh         = fopen($filePath, 'r');
