@@ -28,7 +28,7 @@ if ( $inscription == false) {
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
+    <link type="text/css" rel="stylesheet" href="../assets/css/TopNavBarStyles.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -38,6 +38,15 @@ if ( $inscription == false) {
     <![endif]-->
 
 <body>
+
+    <div id='cssmenu' class="sticky">
+        <ul>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/liste.php?token=<?= $_GET['token']; ?>'>Home</a></li>
+           <li><a href=''>Reset BDD</a></li>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/register_admin.php?token=<?= $_GET['token']; ?>'>Creer un compte</a></li>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/logout.php?token=<?= $_GET['token']; ?>'>Deconnexion</a></li>
+        </ul>
+    </div>
 
 <div id="alert" style="display: none">
     <div class="alert"></div>
@@ -57,6 +66,7 @@ if ( $inscription == false) {
     }
 
     body {
+        margin-top: 40px;
         font-size: 1.8em;
     }
 </style>
@@ -250,6 +260,8 @@ if ( $inscription == false) {
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/topNavBarScript.js"></script>
 <script>
     $(document).ready(function(){
         if ( $('#alert') ) {

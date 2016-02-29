@@ -34,7 +34,7 @@ include('../includes/common/head.php'); //contient le head.
 </head>
 <header>
 <?php 
-include('../includes/common/header.php'); //contient le header.
+include('cssmenu/topNavBar.php'); //contient le header.
 ?>
 </header>
 
