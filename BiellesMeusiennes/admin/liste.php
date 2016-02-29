@@ -82,8 +82,6 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
 
 <h1>Informations générales des utilisateurs</h1>
 
-<input type="hidden" value="<?php echo $_POST['token']?>">
-
 <div class="container-fluid">
     <div id="alert" style="display:none;">
         <div class="alert"></div>
