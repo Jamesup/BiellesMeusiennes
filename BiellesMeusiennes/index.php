@@ -24,67 +24,74 @@ if (!empty($_POST)) {
 		die();
 	}
 
-
-
-	if (isset($_POST['type']) && (!empty($_POST['type']))
-		&& isset($_POST['firstname']) && (!empty($_POST['firstname'])) 
-		&& isset($_POST['lastname']) && (!empty($_POST['lastname']))		
-		&& isset($_POST['email']) && (!empty($_POST['email']))
-		&& isset($_POST['phone']) && (!empty($_POST['phone']))
-		&& isset($_POST['adress1']) && (!empty($_POST['adress1']))
-		&& isset($_POST['adress2'])
-		&& isset($_POST['adress3'])
-		&& isset($_POST['city']) && (!empty($_POST['city'])) 
-		&& isset($_POST['cp']) && (!empty($_POST['cp']))
-		&& isset($_POST['country']) && (!empty($_POST['country'])) 
-		&& isset($_POST['cedex'])		
-		&& isset($_POST['marque']) && (!empty($_POST['marque'])) 
-		&& isset($_POST['model']) && (!empty($_POST['model'])) 
-		&& isset($_POST['serie']) && (!empty($_POST['serie'])) 
-		&& isset($_POST['motorisation']) && (!empty($_POST['motorisation'])) 
+	if (isset($_POST['firstname'])  
+		&& isset($_POST['lastname']) 		
+		&& isset($_POST['email']) 	
+		&& isset($_POST['city']) 
+		&& isset($_POST['cp']) 
+		&& isset($_POST['country']) 
+		&& isset($_POST['newsletter']) 
+		&& isset($_POST['club'])	
+		&& isset($_POST['marque']) 
+		&& isset($_POST['model']) 
+		&& isset($_POST['type']) 
+		&& isset($_POST['motorisation']) 
 		&& isset($_POST['immat'])
-		&& isset($_POST['date_circu']) && (!empty($_POST['date_circu'])) 		
-		&& isset($_POST['infos'])
-		&& isset($_POST['model_info'])
-		&& isset($_POST['club'])
+		&& isset($_POST['date_circu']) 	
+		&& isset($_POST['infos'])		
 		) {
+
+
 		/* sécurisation faille XSS*/
-		$donneesOwner = [
+
+		if (isset($_POST['concours1'])) {
+			$concours1 = true;
+		} else {
+			$concours1 = false;
+		}
+		if (isset($_POST['concours2'])) {
+			$concours2 = true;
+		} else {
+			$concours2 = false;
+		}
+		if (isset($_POST['concours3'])) {
+			$concours3 = true;
+		} else {
+			$concours3 = false;
+		}
+
+		$exposant = [
 			'firstname' => htmlspecialchars($_POST['firstname']), 
-			'lastname' => htmlspecialchars($_POST['lastname']),
-			'type' => htmlspecialchars($_POST['type']), 
+			'lastname' => htmlspecialchars($_POST['lastname']),			
 			'email' => htmlspecialchars($_POST['email']),
-			'phone' => htmlspecialchars($_POST['phone']),
-			'adress1' => htmlspecialchars($_POST['adress1']), 
-			'adress2' => htmlspecialchars($_POST['adress2']), 
-			'adress3' => htmlspecialchars($_POST['adress3']),
 			'city' => htmlspecialchars($_POST['city']),
-			'cp' => htmlspecialchars($_POST['cp']),
-			'cedex' => htmlspecialchars($_POST['cedex']),
+			'cp' => htmlspecialchars($_POST['cp']),			
 			'country' => htmlspecialchars($_POST['country']),
-			'newsletter' => "NON",
-			'club' => htmlspecialchars($_POST['club'])		
-			];
-		$donneesVehicle = [
+			'newsletter' => htmlspecialchars($_POST['newsletter']),
+			'club' => htmlspecialchars($_POST['club']),		
 			'marque' => htmlspecialchars($_POST['marque']),
 			'model' => htmlspecialchars($_POST['model']),
-			'serie' => htmlspecialchars($_POST['serie']),
+			'type' => htmlspecialchars($_POST['type']),
 			'motorisation' => htmlspecialchars($_POST['motorisation']),
-			'model_info' => htmlspecialchars($_POST['model_info']),
-			'date_circu' => htmlspecialchars($_POST['date_circu']),
 			'immat' => htmlspecialchars($_POST['immat']),
-			'infos' => htmlspecialchars($_POST['infos'])
+			'date_circu' => htmlspecialchars($_POST['date_circu']),
+			'infos' => htmlspecialchars($_POST['infos']),
+			'concours1' => $concours1,
+			'concours2' => $concours2,
+			'concours3' => $concours3
 			];
+
+		
 		try {
 			/* inscription dans la bdd*/
 
-			$owner_id = ajouter_inscription($donneesOwner, $donneesVehicle);
+			$exposant_id = ajouter_inscription($exposant);
 
 			try {
 
 				/* envoi emails*/
-			envoi_mail("inscription", $donneesOwner['email'], $owner_id);
-			envoi_mail("nouvel_inscrit", "localhost@local.io", $owner_id);			
+			envoi_mail("inscription", $exposant['email'], $exposant_id);
+			envoi_mail("nouvel_inscrit", "localhost@local.io", $exposant_id);			
 				/*  */
 
 			/* retour à la page des Bielles Meusiennes avec un message de réussite ou d'erreur */

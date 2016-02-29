@@ -1,12 +1,4 @@
 <?php
-include('../includes/common/verif_security.php'); 
-
-try {
-    verif_origin_user();
-} catch (Exception $e) {
-   header('Location: http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/index.php?message=errortoken&token=' . $_POST['token'] );
-    die();
-}
 
 require "../../vendor/autoload.php";
 use Core\Configure\Config;

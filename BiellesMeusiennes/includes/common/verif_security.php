@@ -24,7 +24,7 @@ function verif_origin_user () {
 			}
 		}
 		/* sécurisation failles CSRF. on refuse toute connexion qui provient d'un autre site que celui des Bielles Meusiennes public*/
-		else if (!preg_match("#^http:\/\/hiddenj.jimdo.com\/design-formulaire-1\/#", $_SERVER['HTTP_REFERER'])) {
+		else if (!preg_match("#^http:\/\/hiddenj.jimdo.com\/#", $_SERVER['HTTP_REFERER'])) {
 			throw new Exception ('vous venez de ce site non autorisé : '. $_SERVER['HTTP_REFERER']);
 		}		
 	} else {
