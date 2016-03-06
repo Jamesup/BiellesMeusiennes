@@ -11,7 +11,7 @@ include('../includes/common/verif_security.php');
 require "../vendor/autoload.php";
 use Core\Configure\Config;
 
-$inscription = Config::QueryBuilder()->findOne("Owners")->contain('Vehicles')->where(['owners.id' => intval($_GET['user'])])->execute();
+$inscription = Config::QueryBuilder()->findOne("exposants")->where(['id' => intval($_GET['user'])])->execute();
 if ( $inscription == false) {
     throw new Exception ("Erreur");
 }
@@ -39,14 +39,7 @@ if ( $inscription == false) {
 
 <body>
 
-    <div id='cssmenu' class="sticky">
-        <ul>
-           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/liste.php?token=<?= $_GET['token']; ?>'>Home</a></li>
-           <li><a href=''>Reset BDD</a></li>
-           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/register_admin.php?token=<?= $_GET['token']; ?>'>Creer un compte</a></li>
-           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/logout.php?token=<?= $_GET['token']; ?>'>Deconnexion</a></li>
-        </ul>
-    </div>
+    
 
 <div id="alert" style="display: none">
     <div class="alert"></div>
@@ -65,16 +58,30 @@ if ( $inscription == false) {
         margin-left: 5%;
     }
 
-    body {
-        margin-top: 40px;
+    body {        
         font-size: 1.8em;
+    }
+
+    .container {
+        padding-top: 60px;
     }
 </style>
 
-<h2>Visualisation complète des informations d'une inscription</h2>
+<div id='cssmenu' class="sticky">
+        <ul>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/liste.php?token=<?= $_GET['token']; ?>'>Home</a></li>
+           <li><a href=''>Reset BDD</a></li>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/register_admin.php?token=<?= $_GET['token']; ?>'>Creer un compte</a></li>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/logout.php?token=<?= $_GET['token']; ?>'>Deconnexion</a></li>
+        </ul>
+    </div>
+
+
 
 <div class="container">
-    <div class="row">
+
+    <h2>Visualisation complète des informations d'une inscription</h2>
+        <div class="row">
         <?php if ($inscription->valid ==0) {
             $statut = "<span style='color:orange;'>En attente</span>";
         }else if( $inscription->valid ==1 ){
@@ -103,7 +110,7 @@ if ( $inscription == false) {
                 <?php endif; ?>
             </div>
             <div class="col-xs-6">
-                <a href="edit.php?user=<?= $inscription->owner_id;?>" class="btn btn-primary">Editer</a>
+                <a href="edit.php?user=<?= $inscription->id;?>&token=<?= $_GET['token'] ?>" class="btn btn-primary">Editer</a>
                 <button type="button" class="btn btn-danger btn-delete"
                         data-id="<?= $inscription->owner_id; ?>">Supprimer
                 </button>
@@ -131,35 +138,10 @@ if ( $inscription == false) {
                             <th scope="row">Prénom</th>
                             <td><?= $inscription->firstname; ?></td>
 
-                        </tr>
-                        <tr>
-                            <th scope="row">Genre</th>
-                            <td>
-                                <select name="type"  class="form-control" disabled>
-                                    <option value="0" <?= ($inscription->type == 0) ? "selected" :'';?> >Homme</option>
-                                    <option value="1" <?= ($inscription->type == 1) ? "selected" :'';?> >Femme</option>
-                                </select>
-                            </td>
-
-                        </tr>
+                        </tr>                        
                         <tr>
                             <th scope="row">Email</th>
                             <td><?= $inscription->email; ?></td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row">Adresse 1</th>
-                            <td><?= $inscription->adress1; ?></td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row">Adresse 2</th>
-                            <td><?= $inscription->adress2; ?></td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row">Adresse 3</th>
-                            <td><?= $inscription->adress3; ?></td>
 
                         </tr>
                         <tr>
@@ -171,12 +153,7 @@ if ( $inscription == false) {
                             <th scope="row">Code Postal</th>
                             <td><?= $inscription->cp; ?></td>
 
-                        </tr>
-                        <tr>
-                            <th scope="row">Cedex</th>
-                            <td><?= $inscription->cedex; ?></td>
-
-                        </tr>
+                        </tr>                        
                         <tr>
                             <th scope="row">Pays</th>
                             <td><?= $inscription->country; ?></td>
@@ -224,20 +201,15 @@ if ( $inscription == false) {
 
                         </tr>
                         <tr>
-                            <th scope="row">Série</th>
-                            <td><?= $inscription->serie; ?></td>
+                            <th scope="row">Type</th>
+                            <td><?= $inscription->type; ?></td>
 
                         </tr>
                         <tr>
                             <th scope="row">Motorisation</th>
                             <td><?= $inscription->motorisation; ?></td>
 
-                        </tr>
-                        <tr>
-                            <th scope="row">Informations complémentaires sur le modèle</th>
-                            <td><?= $inscription->model_info; ?></td>
-
-                        </tr>
+                        </tr>                        
                         <tr>
                             <th scope="row">Date de mise en circulation</th>
                             <td><?= $inscription->date_circu; ?></td>
@@ -253,6 +225,22 @@ if ( $inscription == false) {
                             <td><p><?= $inscription->infos; ?></p></td>
 
                         </tr>
+                        <tr>
+                            <th scope="row">Claude Lorrenzini</th>
+                            <td><p><?= ($inscription->concours1 == 0) ? "Oui" : "Non" ?></p></td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Coupé-Cabriolet</th>
+                            <td><p><?= ($inscription->concours2 == 0) ? "Oui" : "Non" ?></p></td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">Jeun de -25 ans</th>
+                            <td><p><?= ($inscription->concours3 == 0) ? "Oui" : "Non" ?></p></td>
+
+                        </tr>
+
                         </tbody>
                     </table>
             </div>
@@ -283,7 +271,7 @@ if ( $inscription == false) {
             var alertWrapper = $('#alert');
             var alertContent = $('.alert');
 
-            $.post('actions/actions.php', data)
+            $.post('../admin/actions/actions.php', data)
                 .done(function (result) {
                     var res = JSON.parse(result);
                     alertContent.addClass('alert-success').removeClass('alert-danger').html(res.message);
@@ -307,7 +295,7 @@ if ( $inscription == false) {
             var alertWrapper = $('#alert');
             var alertContent = $('.alert');
 
-            $.post('actions/actions.php', data)
+            $.post('../admin/actions/actions.php', data)
                 .done(function (result) {
                     var res = JSON.parse(result);
                     alertContent.addClass('alert-success').removeClass('alert-danger').html(res.message);
@@ -330,7 +318,7 @@ if ( $inscription == false) {
                 type: "supprimer",
                 id: $(this).data('id')
             };
-            $.post('actions/actions.php', data)
+            $.post('../admin/actions/actions.php', data)
                 .done(function (result) {
                     var res = JSON.parse(result);
                     window.location.href = "liste.php";

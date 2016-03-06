@@ -1,51 +1,38 @@
-<page  backright="25%" backtop="25%" >
-    <page_header>
-       Je suis le header dans la page includes/App/Views/pdf/default
-    </page_header>
-    <page_footer>
-        ...
-    </page_footer>
-    <nobreak>
-    <table cellspacing="10" style="font-size: 10px">
-        <thead>
-            <tr>
-                <th>id</th>
-                <th>firstname</th>
-                <th>lastname</th>
-                <th>type</th>
-                <th>email</th>
-                <th>adress1</th>
-                <th>adress2</th>
-                <th>adress3</th>
-                <th>city</th>
-                <th>cp</th>
-                <th>cedex</th>
-                <th>country</th>
-                <th>newsletter</th>
-                <th>club</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($datas as $data) : ?>
+<?php
+header('Content-type: text/html; charset=utf-8');
+?>
 
-            <tr>
-                <td><?= $data->id;?></td>
-                <td><?= $data->firstname;?></td>
-                <td><?= $data->lastname;?></td>
-                <td><?= $data->type;?></td>
-                <td><?= $data->email;?></td>
-                <td><?= $data->adress1;?></td>
-                <td><?= $data->adress2;?></td>
-                <td><?= $data->adress3;?></td>
-                <td><?= $data->city;?></td>
-                <td><?= $data->cp;?></td>
-                <td><?= $data->cedex;?></td>
-                <td><?= $data->country;?></td>
-                <td><?= $data->newsletter;?></td>
-                <td><?= $data->club;?></td>
-            </tr>
-        <?php endforeach;?>
-        </tbody>
-    </table>
-</nobreak>
-</page>
+<body style="width:793px;height:1122px; margin:auto; border:1px rgb(0, 127, 255) solid; font-size:50px; color: rgb(85, 114, 182); font-family:ar julian;">
+
+	<div class="logo">
+	<!--Je n'es pas trouver le logo-->
+		<center><img style="margin:auto; width:60%; height:25%; margin-top:30px;" src="logo_retro_meuse.png"/></center>
+	</div>
+	
+		<div class="fiche" style="margin-left:25px; line-height:100px;">
+		
+			<div class="marque">
+				<p><b>Marque:</b>   <? $data['marque'];?>   </p>
+			</div>
+			
+			<div class="modele">
+				<p><b>Modèle:</b>  <? $data['model'];?>    </p>
+			</div>
+			
+			<div class="type">
+				<p><b>Type:</b>  <? $data['type'];?>    </p>
+			</div>
+			
+			<div class="annee">
+				<p><b>Année:</b>   <? $data['date_circu'];?>   </p>
+			</div>
+			
+			<div class="club">
+				<p><b>Club:</b>   <? $data['club'];?>   </p>
+			</div>
+			
+		</div>
+
+
+
+</body>

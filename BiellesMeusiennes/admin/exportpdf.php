@@ -13,7 +13,7 @@ use Core\Configure\Config;
 use Core\Export\DataExporter;
 
 
-$membre = Config::QueryBuilder()->findAll("Owners")->execute();
+$membre = Config::QueryBuilder()->findAll("exposants")->execute();
 //export en direct dans le navigateur
 $pdf = new DataExporter('test', 'pdf');
 $pdf->setPdfAttributes('l', 'A4', 'fr', 'default')->export($membre);

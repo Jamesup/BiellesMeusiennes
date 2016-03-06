@@ -10,7 +10,7 @@ try {
 
 require "../vendor/autoload.php";
 use Core\Configure\Config;
-$inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->execute();
+$inscriptions = Config::QueryBuilder()->findAll("exposants")->execute();
 
   if(!isset($_SESSION)) { 
     session_start();
@@ -96,7 +96,7 @@ include('cssmenu/topNavBar.php'); //contient le header.
                 <td><?= $inscription->date_circu ;?></td>
                 <td class="row">
                   <div class="col-xs-6">
-                    <a href="inscrits_view.php?user=<?php echo $inscription->owner_id;?>" class="btn btn-default btn-md">Voir</a>
+                    <a href="inscrits_view.php?user=<?php echo $inscription->id;?>" class="btn btn-default btn-md">Voir</a>
                   </div>
                   <div class="col-xs-6">
                     <button type="button" class="btn btn-success btn-md">Valider</button><button type="button" class="btn btn-warning btn-md">Refuser</button>

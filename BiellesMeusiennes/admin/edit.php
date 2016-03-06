@@ -21,10 +21,9 @@ if (!empty($_POST) &&  isset($_POST['segment'])) {
             unset($_POST['segment']);
             $_POST['newsletter'] = intval($_POST['newsletter']);
             $_POST['cp'] = intval($_POST['cp']);
-            $_POST['valid'] = intval($_POST['valid']);
-            $_POST['type'] = intval($_POST['type']);
+            $_POST['valid'] = intval($_POST['valid']);            
 
-            $edit = Config::QueryBuilder()->update('Owners', ['id' => $id], $_POST)->execute();
+            $edit = Config::QueryBuilder()->update('exposants', ['id' => $id], $_POST)->execute();
             if ($edit) {
                 $message = "Participant mis à jour";
                 $class = "alert-success";
@@ -36,9 +35,8 @@ if (!empty($_POST) &&  isset($_POST['segment'])) {
         case 'vehicle':
             $id = intval($_POST['id']);
             unset($_POST['id']);
-            unset($_POST['segment']);
-            $_POST['owner_id'] = intval($_POST['owner_id']);
-            $edit = Config::QueryBuilder()->update('Vehicles', ['id' => $id], $_POST)->execute();
+            unset($_POST['segment']);            
+            $edit = Config::QueryBuilder()->update('exposants', ['id' => $id], $_POST)->execute();
             if ($edit) {
                 $message = "Vehicule mis à jour";
                 $class = "alert-success";
@@ -49,7 +47,7 @@ if (!empty($_POST) &&  isset($_POST['segment'])) {
             break;
     }
 }
-$inscription = Config::QueryBuilder()->findOne("Owners")->contain('Vehicles')->where(['owners.id' => intval($_GET['user'])])->execute();
+$inscription = Config::QueryBuilder()->findOne("exposants")->where(['id' => intval($_GET['user'])])->execute();
 if ( $inscription == false) {
     throw new Exception ("Erreur");
 }
@@ -66,7 +64,7 @@ if ( $inscription == false) {
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
+    <link type="text/css" rel="stylesheet" href="../assets/css/TopNavBarStyles.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -98,10 +96,19 @@ if ( $inscription == false) {
         margin-left: 5%;
     }
 
-    body {
+    body {        
         font-size: 1.8em;
     }
 </style>
+
+<div id='cssmenu' class="sticky">
+        <ul>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/liste.php?token=<?= $_GET['token']; ?>'>Home</a></li>
+           <li><a href=''>Reset BDD</a></li>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/register_admin.php?token=<?= $_GET['token']; ?>'>Creer un compte</a></li>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/logout.php?token=<?= $_GET['token']; ?>'>Deconnexion</a></li>
+        </ul>
+    </div>
 
 <h2>Visualisation complète des informations d'une inscription</h2>
 
@@ -118,22 +125,22 @@ if ( $inscription == false) {
         <div class="col-xs-12" style="text-align: center;">
             <?php if ($inscription->valid == 0): ?>
                 <button type="button" class="btn btn-success btn-validate"
-                        data-id="<?= $inscription->owner_id; ?>">Valider
+                        data-id="<?= $inscription->id; ?>">Valider
                 </button>
                 <button type="button" class="btn btn-warning btn-refused"
-                        data-id="<?= $inscription->owner_id; ?>">Refuser
+                        data-id="<?= $inscription->id; ?>">Refuser
                 </button>
             <?php elseif($inscription->valid == 1): ?>
                 <button type="button" class="btn btn-warning btn-refused"
-                        data-id="<?= $inscription->owner_id; ?>">Refuser
+                        data-id="<?= $inscription->id; ?>">Refuser
                 </button>
             <?php else: ?>
                 <button type="button" class="btn btn-success btn-validate"
-                        data-id="<?= $inscription->owner_id; ?>">Valider
+                        data-id="<?= $inscription->id; ?>">Valider
                 </button>
             <?php endif; ?>
             <button type="button" class="btn btn-danger btn-delete"
-                    data-id="<?= $inscription->owner_id; ?>">Supprimer
+                    data-id="<?= $inscription->id; ?>">Supprimer
             </button>
         </div>
     </div>
@@ -141,7 +148,7 @@ if ( $inscription == false) {
         <div class="col-xs-12">
             <div class="table">
                 <form action="" method="post">
-                    <input type="hidden" value="<?= $inscription->owner_id ;?>" name="id">
+                    <input type="hidden" value="<?= $inscription->id ;?>" name="id">
                     <input type="hidden" value="owner" name="segment">
                     <input type="hidden" value="<?= $inscription->valid ;?>" name="valid">
 
@@ -162,37 +169,12 @@ if ( $inscription == false) {
                         <th scope="row">Prénom</th>
                         <td><input type="text" value="<?= $inscription->firstname; ?>" name="firstname" class="form-control"></td>
 
-                    </tr>
-                    <tr>
-                        <th scope="row">Genre</th>
-                        <td>
-                            <select name="type"  class="form-control">
-                                <option value="0" <?= ($inscription->type == 0) ? "selected" :'';?> >Homme</option>
-                                <option value="1" <?= ($inscription->type == 1) ? "selected" :'';?> >Femme</option>
-                            </select>
-                        </td>
-
-                    </tr>
+                    </tr>                    
                     <tr>
                         <th scope="row">Email</th>
                         <td><input type="text" value="<?= $inscription->email; ?>"  name="email" class="form-control"></td>
 
-                    </tr>
-                    <tr>
-                        <th scope="row">Adresse 1</th>
-                        <td><input type="text" value="<?= $inscription->adress1; ?>" name="adress1" class="form-control"></td>
-
-                    </tr>
-                    <tr>
-                        <th scope="row">Adresse 2</th>
-                        <td><input type="text" value="<?= $inscription->adress2; ?>" name="adress2" class="form-control"></td>
-
-                    </tr>
-                    <tr>
-                        <th scope="row">Adresse 3</th>
-                        <td><input type="text" value="<?= $inscription->adress3; ?>" name="adress3" class="form-control"></td>
-
-                    </tr>
+                    </tr>                    
                     <tr>
                         <th scope="row">Ville</th>
                         <td><input type="text" value="<?= $inscription->city; ?>" name="city" class="form-control"></td>
@@ -202,12 +184,7 @@ if ( $inscription == false) {
                         <th scope="row">Code Postal</th>
                         <td><input type="text" value="<?= $inscription->cp; ?>" name="cp" class="form-control"></td>
 
-                    </tr>
-                    <tr>
-                        <th scope="row">Cedex</th>
-                        <td><input type="text" value="<?= $inscription->cedex; ?>" name="cedex" class="form-control"></td>
-
-                    </tr>
+                    </tr>                    
                     <tr>
                         <th scope="row">Pays</th>
                         <td><input type="text" value="<?= $inscription->country; ?>" name="country" class="form-control"></td>
@@ -239,9 +216,8 @@ if ( $inscription == false) {
     <div class="row">
         <div class="col-xs-12">
             <div class="table">
-                <form action="" method="post">
-                    <input type="hidden" value="<?= $inscription->owner_id; ?>" name="owner_id">
-                    <input type="hidden" value="<?= $inscription->id; ?>" name="id">
+                <form action="" method="post">                    
+                    <input type="hidden" value="<?= $inscription->id ;?>" name="id">
                     <input type="hidden" value="vehicle" name="segment">
                 <table summary="Visualisation des informations d'un véhicule"
                        class="table table-hover table-responsive table-condensed table-striped">
@@ -262,20 +238,15 @@ if ( $inscription == false) {
 
                     </tr>
                     <tr>
-                        <th scope="row">Série</th>
-                        <td><input type="text" value="<?= $inscription->serie; ?>" class="form-control" name="serie"></td>
+                        <th scope="row">Type</th>
+                        <td><input type="text" value="<?= $inscription->type; ?>" class="form-control" name="type"></td>
 
                     </tr>
                     <tr>
                         <th scope="row">Motorisation</th>
                         <td><input type="text" value="<?= $inscription->motorisation; ?>" class="form-control" name="motorisation"></td>
 
-                    </tr>
-                    <tr>
-                        <th scope="row">Informations complémentaires sur le modèle</th>
-                        <td><input type="text" value="<?= $inscription->model_info; ?>" class="form-control" name="model_info"></td>
-
-                    </tr>
+                    </tr>                    
                     <tr>
                         <th scope="row">Date de mise en circulation</th>
                         <td><input type="text" value="<?= $inscription->date_circu; ?>" class="form-control" name="date_circu"></td>
@@ -283,7 +254,7 @@ if ( $inscription == false) {
                     </tr>
                     <tr>
                         <th scope="row">Immatriculation</th>
-                        <td><input type="text" value="<?= $inscription->imat; ?>" class="form-control" name="imat"></td>
+                        <td><input type="text" value="<?= $inscription->immat; ?>" class="form-control" name="immat"></td>
 
                     </tr>
                     <tr>

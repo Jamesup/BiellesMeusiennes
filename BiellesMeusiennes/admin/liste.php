@@ -13,7 +13,7 @@ require "../vendor/autoload.php";
 use Core\Configure\Config;
 
 
-$inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->execute();
+$inscriptions = Config::QueryBuilder()->findAll("exposants")->execute();
 
 //$inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->orderBy(['valid' =>'ASC'])->execute();
 ?>
@@ -61,8 +61,9 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
         font-size: 1.7em;
     }
 
-
-
+    .container-fluid {
+        padding-top: 60px;
+    }
 
 </style>
 
@@ -77,12 +78,9 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
            <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/logout.php?token=<?= $_GET['token']; ?>'>Deconnexion</a></li>
         </ul>
     </div>
-    
-
-
-<h1>Informations générales des utilisateurs</h1>
 
 <div class="container-fluid">
+    <h1>Informations générales des utilisateurs</h1>
     <div id="alert" style="display:none;">
         <div class="alert"></div>
     </div>
@@ -91,7 +89,7 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
             <div class="pull-right">
                 <form action="actions/actions.php" method="POST">
                     <input name="action" value="exportCsv" type="hidden">
-                    <input name="model" value="Owners" type="hidden">
+                    <input name="model" value="Exposants" type="hidden">
                     <button id="btn-csv" type="submit" class="btn btn-primary">Export csv</button>
                 </form>
             </div>
@@ -103,9 +101,7 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
                 <table id="moTable" summary="Exemple d'affichage du tableau de visualisation des utilisateurs"
                        class="table table-hover table-striped table-responsive table-condensed">
                     <thead>
-                    <tr>
-
-                        <th></th>
+                    <tr>                        
                         <th>Nom</th>
                         <th>Prénom</th>
                         <th>Email</th>
@@ -131,8 +127,7 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
                             } else if($inscription->valid == 2){
                                 $color ="red";
                                 $text = "refusé";
-                            }?>
-                            <td><?= ($inscription->type) ? "Mme" : "Mr"; ?></td>
+                            }?>                            
                             <td><?= $inscription->lastname; ?></td>
                             <td><?= $inscription->firstname; ?></td>
                             <td><?= $inscription->email; ?></td>
@@ -145,22 +140,22 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
                             <td style="display:none;"><span style="visibility: hidden;"><?= $inscription->valid;?></span></td>
                             <td>
                                 <span class="pull-left">
-                                    <a href="view.php?user=<?= $inscription->owner_id; ?>&token=<?= $_GET['token'] ?>"
+                                    <a href="view.php?user=<?= $inscription->id; ?>&token=<?= $_GET['token'] ?>"
                                        class="btn btn-default btn-md">Voir</a>
                                     <?php if ($inscription->valid == 0): ?>
                                         <button type="button" class="btn btn-success btn-validate"
-                                                data-id="<?= $inscription->owner_id; ?> ">Valider
+                                                data-id="<?= $inscription->id; ?> ">Valider
                                         </button>
                                         <button type="button" class="btn btn-danger btn-refused"
-                                                data-id="<?= $inscription->owner_id; ?>">Refuser
+                                                data-id="<?= $inscription->id; ?>">Refuser
                                         </button>
                                     <?php elseif($inscription->valid == 1): ?>
                                         <button type="button" class="btn btn-danger btn-refused"
-                                                data-id="<?= $inscription->owner_id; ?>">Refuser
+                                                data-id="<?= $inscription->id; ?>">Refuser
                                         </button>
                                     <?php else: ?>
                                         <button type="button" class="btn btn-success btn-validate"
-                                                data-id="<?= $inscription->owner_id; ?>">Valider
+                                                data-id="<?= $inscription->id; ?>">Valider
                                         </button>
                                     <?php endif; ?>
                                 </span>
@@ -210,7 +205,7 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
             },
            "order": [[10, 'asc']]
         });
-        $('.btn-validate').on('click', function (e) {
+        $('.btn-validate').on('click', function (e) {            
             e.preventDefault();
             var data = {
                 action: "validate",
@@ -218,25 +213,23 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
                 id: $(this).data('id')
             };
             var alertWrapper = $('#alert');
-            var alertContent = $('.alert');
+            var alertContent = $('.alert'); 
 
-            $.post('actions/actions.php', data)
+            $.post('../admin/actions/actions.php', data)
                 .done(function (result) {
                     var res = JSON.parse(result);
                     alertContent.addClass('alert-success').removeClass('alert-danger').html(res.message);
-                    alertWrapper.fadeIn().delay(1000).fadeOut(400);
-                    setTimeout(location.reload(), 6000);
+                    alertWrapper.fadeIn().delay(500).fadeOut(2400);
+                    setTimeout(location.reload(), 2000);
                 })
-                .fail(function () {
+                .fail(function () {                    
                     alertContent.addClass('alert-danger').removeClass('alert-success').html('Une erreur est survenue lors de l\'action demandée');
-                    alertWrapper.fadeIn().delay(1000).fadeOut(400);
-                    setTimeout(location.reload(), 6000);
+                    alertWrapper.fadeIn().delay(500).fadeOut(2400);
+                    setTimeout(location.reload(), 2000);
                 })
         });
         $('.btn-refused').on('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.preventDefault();
+            e.preventDefault();            
             var data = {
                 action: "validate",
                 type: "refuser",
@@ -245,16 +238,16 @@ $inscriptions = Config::QueryBuilder()->findAll("Owners")->contain('Vehicles')->
             var alertWrapper = $('#alert');
             var alertContent = $('.alert');
 
-            $.post('actions/actions.php', data)
+            $.post('../admin/actions/actions.php', data)
                 .done(function (result) {
                     var res = JSON.parse(result);
                     alertContent.addClass('alert-success').removeClass('alert-danger').html(res.message);
-                    alertWrapper.fadeIn().delay(2000).fadeOut(400);
+                    alertWrapper.fadeIn().delay(500).fadeOut(2400);
                     setTimeout(location.reload(), 2000);
                 })
                 .fail(function () {
                     alertContent.addClass('alert-danger').removeClass('alert-success').html('Une erreur est survenue lors de l\'action demandée');
-                    alertWrapper.fadeIn().delay(2000).fadeOut(400);
+                    alertWrapper.fadeIn().delay(500).fadeOut(2400);
                     setTimeout(location.reload(), 2000);
                 })
         });
