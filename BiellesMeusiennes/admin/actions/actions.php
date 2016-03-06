@@ -21,7 +21,8 @@ if ($_POST && isset($_POST['action'])) {
 }
 
 function validate ($type, $id) {
-    $params = false;
+    $params1 = false;
+    $params2 = false;
     switch ($type) {
         case "valider":
             $message = ["message" =>  "Inscription valide"];
@@ -36,13 +37,18 @@ function validate ($type, $id) {
         case "supprimer":
             $message = ["message" =>  "Inscription supprimee"];
             break;
+        case "toutsupprimer":
+            $params2 = "suppression";
+            break;
     }
     
     if ( $params1 ) {        
         $upd = Config::QueryBuilder()->update('exposants', ['id' => $id], $params1)->execute();
         envoi_mail ($params2, $id);
-    }else {
-        $upd = Config::QueryBuilder()->delete('exposants')->where(['id' => $id])->execute();        
+    } elseif ($params2) {
+        $upd = Config::QueryBuilder()->deleteAll('exposants')->execute(); 
+    } else {
+        $upd = Config::QueryBuilder()->delete('exposants')->where(['id' => $id])->execute(); 
     }
     if ($upd) {
         if (!$message) {

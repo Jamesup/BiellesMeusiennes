@@ -73,7 +73,7 @@ $inscriptions = Config::QueryBuilder()->findAll("exposants")->execute();
     <div id='cssmenu' class="sticky">
         <ul>
            <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/liste.php?token=<?= $_GET['token']; ?>'>Home</a></li>
-           <li><a href=''>Reset BDD</a></li>
+           <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/admin/reset.php?token=<?= $_GET['token']; ?>'>Reset BDD</a></li>
            <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/register_admin.php?token=<?= $_GET['token']; ?>'>Creer un compte</a></li>
            <li><a href='http://localhost/BiellesMeusiennes/BiellesMeusiennes/includes/admin/logout.php?token=<?= $_GET['token']; ?>'>Deconnexion</a></li>
         </ul>
@@ -159,7 +159,6 @@ $inscriptions = Config::QueryBuilder()->findAll("exposants")->execute();
                                         </button>
                                     <?php endif; ?>
                                 </span>
-
 
                             </td>
                         </tr>

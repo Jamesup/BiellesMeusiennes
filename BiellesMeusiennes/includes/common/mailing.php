@@ -70,7 +70,7 @@ function envoi_mail ($action, $exposant_id) {
 			        'path' => $resultPdf,
 			        'name' => $pdf->filename.'.pdf'
 			    ]
-			];			
+			];
 
 			//=====Définition du sujet.			
 			$subject = "Validation de votre inscription à l'évênement des Bielles Meusiennes";
