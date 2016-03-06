@@ -53,7 +53,14 @@ use Core\Configure\Config;
 </style>
 
 <!--FIN du style CSS perso-->
+<?php if ($message) :?>
+    <div id="alert">
+        <div class="alert <?= $class; ?>">
+            <?= $message ;?>
+        </div>
+    </div>
 
+<?php endif ;?>
     
     <div id='cssmenu' class="sticky">
         <ul>
