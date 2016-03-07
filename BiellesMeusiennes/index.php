@@ -12,7 +12,7 @@ include_once('./includes/public/functions.php');
 try {
 	verif_origin_user();
 } catch (Exception $e) {
-	header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error');
+	header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error1');
 	die();
 }
 
@@ -20,7 +20,7 @@ try {
 $captcha = new Recaptcha ('6LdidxgTAAAAAHGefCS0_l2eyEeXVWh4lRFVHyzj', '6LdidxgTAAAAAA-7SGtTTaso_qETEZ6-fg_XUYOz');
 if (!empty($_POST)) {
 	if ($captcha->isValid($_POST['g-recaptcha-response']) == false) {
-		header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error');
+		header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error2');
 		die();
 	}
 
@@ -30,8 +30,7 @@ if (!empty($_POST)) {
 		&& isset($_POST['city']) 
 		&& isset($_POST['cp']) 
 		&& isset($_POST['country']) 
-		&& isset($_POST['newsletter']) 
-		&& isset($_POST['club'])	
+		&& isset($_POST['newsletter']) 		
 		&& isset($_POST['marque']) 
 		&& isset($_POST['model']) 
 		&& isset($_POST['type']) 
@@ -90,8 +89,8 @@ if (!empty($_POST)) {
 			try {
 
 				/* envoi emails*/
-			envoi_mail("inscription", $exposant['email'], $exposant_id);
-			envoi_mail("nouvel_inscrit", "localhost@local.io", $exposant_id);			
+			envoi_mail("inscription", $exposant_id);
+			envoi_mail("nouvel_inscrit", $exposant_id);			
 				/*  */
 
 			/* retour à la page des Bielles Meusiennes avec un message de réussite ou d'erreur */
@@ -101,16 +100,15 @@ if (!empty($_POST)) {
 				/* effacer les données dans la bdd*/
 
 				/* */
-				header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error');
+				header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error3');
 			}
 			
 		} catch (Exception $e) {		
 			
-			header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error');
+			header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error4');
 		}
-	} else {
-		
-		header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error');
+	} else {		
+		header('Location: http://hiddenj.jimdo.com/design-formulaire-1/error5');
 	}
 }
 

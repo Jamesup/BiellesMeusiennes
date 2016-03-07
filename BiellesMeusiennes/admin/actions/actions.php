@@ -3,12 +3,12 @@
 require "../../vendor/autoload.php";
 use Core\Configure\Config;
 use Core\Export\DataExporter;
-include_once('./includes/common/mailing.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/BiellesMeusiennes/BiellesMeusiennes/includes/common/mailing.php');
 
 
 if ($_POST && isset($_POST['action'])) {
     switch ($_POST['action']) {
-        case 'validate':
+        case 'validate':            
             echo  validate( $_POST['type'], $_POST['id']);
             break;
         case 'exportCsv':
@@ -21,26 +21,34 @@ if ($_POST && isset($_POST['action'])) {
 }
 
 function validate ($type, $id) {
-    $params = false;
+    $params1 = false;
+    $params2 = false;
     switch ($type) {
         case "valider":
             $message = ["message" =>  "Inscription valide"];
-            $params = ['valid' => 1, 'action' => "validation"];          
+            $params1 = ['valid' => 1];
+            $params2 = "validation";          
             break;
         case "refuser":
             $message = ["message" =>  "Inscription refuse"];
-            $params = ['valid' => 2, 'action' => "refus"];            
+            $params1 = ['valid' => 2];
+            $params2 = "refus";            
             break;
         case "supprimer":
             $message = ["message" =>  "Inscription supprimee"];
             break;
+        case "toutsupprimer":
+            $params2 = "suppression";
+            break;
     }
-    if ( $params ) {
-        $upd = Config::QueryBuilder()->update('Owners', ['id' => $id], $params)->execute();
-        envoi_mail($params['action'], "localhost.io", $id);
-    }else {
-        $upd = Config::QueryBuilder()->delete('Owners')->where(['id' => $id])->execute();
-        $upd = Config::QueryBuilder()->delete('Vehicles')->where(['owner_id' => $id])->execute();
+    
+    if ( $params1 ) {        
+        $upd = Config::QueryBuilder()->update('exposants', ['id' => $id], $params1)->execute();
+        envoi_mail ($params2, $id);
+    } elseif ($params2) {
+        $upd = Config::QueryBuilder()->deleteAll('exposants')->execute(); 
+    } else {
+        $upd = Config::QueryBuilder()->delete('exposants')->where(['id' => $id])->execute(); 
     }
     if ($upd) {
         if (!$message) {
