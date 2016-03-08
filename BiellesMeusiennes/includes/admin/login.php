@@ -1,3 +1,13 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="language" content="fr" />
+	<link rel="stylesheet" href="../../assets/css/style.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="../../assets/css/bootstrap.min.css" type="text/css">
+</head>
 <?php
 
 session_start();
@@ -10,11 +20,15 @@ $username=(isset($_SESSION['username']))?$_SESSION['username']:'';
 
 if (!isset($_POST['username'])) //On est dans la page de formulaire
 {
-	include('../includes/common/connexion.php');
+	include('../common/connexion.php');
 	//On inclue les 2 pages restantes
-	include('../includes/admin/functions.php');
-	include('../includes/admin/constants.php');
+	include('functions.php');
+	include('constants.php');
 
+		echo '<div class="form-login">';
+		echo '<div class="container-fluid">';
+	
+	
 	if (isset($_GET['message'])) {
 		if ($_GET['message'] == "errorlogin") {
 			echo '<div class="alert alert-danger"><p>Une erreur s\'est produite pendant votre identification.<br /> Le mot de passe ou l\'identifiant entré n\'est pas correct.</p></div>';
@@ -28,19 +42,19 @@ if (!isset($_POST['username'])) //On est dans la page de formulaire
 			echo 'on a envoyé ce token : ' . $_GET['token'];
 		}
 	}
-
-	echo '<form method="post" action="../includes/admin/login.php">
+	
+	echo '<form method="post" action="login.php">
 	<fieldset>
 	<legend>Connexion</legend>
 	<p>
-	<label for="username">Identifiant :</label><input name="username" type="text" id="username" /><br />
-	<label for="password">Mot de Passe :</label><input type="password" name="password" id="password" />
+	<label for="username">Identifiant :</label><input class="form-control input-sm" id="inputsm" name="username" type="text" id="username" /><br />
+	<label for="password">Mot de Passe :</label><input class="form-control input-sm" id="inputsm" type="password" name="password" id="password" />
 	</p>
 	</fieldset>
-	<p><input type="submit" value="Connexion" /></p></form>
-	<a href="../includes/admin/register_admin.php">Creer un compte administrateur</a>
-	 
+	<p><input  class="btn btn-primary" type="submit" value="Connexion" /></p></form>
+	
 	</div>
+	
 	</body>
 	</html>';
 }
@@ -79,7 +93,8 @@ else
 	}
     $query->CloseCursor();
     }
-    echo $message.'</div></body></html>';
+    echo $message.'</div></div>
+	</div></body></html>';
 
 }
 ?>
