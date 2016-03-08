@@ -44,8 +44,10 @@ if (!isset($_POST['username'])) //On est dans la page de formulaire
 	}
 	
 	echo '<form method="post" action="login.php">
+	
 	<fieldset>
 	<legend>Connexion</legend>
+	<br>
 	<p>
 	<label for="username">Identifiant :</label><input class="form-control input-sm" id="inputsm" name="username" type="text" id="username" /><br />
 	<label for="password">Mot de Passe :</label><input class="form-control input-sm" id="inputsm" type="password" name="password" id="password" />
